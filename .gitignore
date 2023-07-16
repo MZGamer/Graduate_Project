@@ -1,0 +1,114 @@
+
+*.exe
+Auto-GPT/
+113/chromedriver.exe
+data (Tainan).csv
+data - ver1.csv
+data - ver2.csv
+data - ver3.csv
+data - ver4.csv
+data - 複製.csv
+data - 複製.json
+data(台南 從2447開始).json
+data(嘉義，已完成).json
+data(高雄 從3992開始).json
+data.csv
+error.csv
+foodPanda.py
+fulldata.json
+newData - 複製 (2).csv
+newData - 複製.csv
+newData copy.csv
+newData.csv
+review.py
+test.py
+train.py
+transformer.ipynb
+ver1.png
+ver2.png
+ver3.png
+ver4.png
+ver5 結果(Comment).png
+ver5 結果(Name).png
+嘉義縣 美食外送┃線上訂立即送_ foodpanda.html
+嘉義縣 美食外送┃線上訂立即送_ foodpanda_files/3608.08cc421cfd582428b837.esm.js.下載
+嘉義縣 美食外送┃線上訂立即送_ foodpanda_files/74435.b8c544828b88d956c457.esm.js.下載
+嘉義縣 美食外送┃線上訂立即送_ foodpanda_files/7f85a56ba4.css
+嘉義縣 美食外送┃線上訂立即送_ foodpanda_files/81106.4b705d9f99902a5625de.esm.js.下載
+嘉義縣 美食外送┃線上訂立即送_ foodpanda_files/analytics.js.下載
+嘉義縣 美食外送┃線上訂立即送_ foodpanda_files/appboy.min.js.下載
+嘉義縣 美食外送┃線上訂立即送_ foodpanda_files/f(1).txt
+嘉義縣 美食外送┃線上訂立即送_ foodpanda_files/f.txt
+嘉義縣 美食外送┃線上訂立即送_ foodpanda_files/fbevents.js.下載
+嘉義縣 美食外送┃線上訂立即送_ foodpanda_files/framework.ebef64b2aacf6907ffa0.esm.js.下載
+嘉義縣 美食外送┃線上訂立即送_ foodpanda_files/gtm.js.下載
+嘉義縣 美食外送┃線上訂立即送_ foodpanda_files/hero-home-tw.jpg
+嘉義縣 美食外送┃線上訂立即送_ foodpanda_files/init.js.下載
+嘉義縣 美食外送┃線上訂立即送_ foodpanda_files/js
+嘉義縣 美食外送┃線上訂立即送_ foodpanda_files/load-css-var-polyfill.v2.js.下載
+嘉義縣 美食外送┃線上訂立即送_ foodpanda_files/load-fid-polyfill.js.下載
+嘉義縣 美食外送┃線上訂立即送_ foodpanda_files/polyfill.min.js.下載
+嘉義縣 美食外送┃線上訂立即送_ foodpanda_files/seo-area-listing-microfrontend-seo-city-page-89925abd.103cafce8c9c074f1613.esm.js.下載
+嘉義縣 美食外送┃線上訂立即送_ foodpanda_files/seo-area-listing-microfrontend-seo-city-page-9a8b795a.932dceec77a1e4dfeb65.css
+嘉義縣 美食外送┃線上訂立即送_ foodpanda_files/seo-area-listing-microfrontend-seo-city-page-bde52cb3.a6b90be75eb4980992f3.esm.js.下載
+嘉義縣 美食外送┃線上訂立即送_ foodpanda_files/seo-area-listing-microfrontend-seo-city-page-e2ae3a23.53c4704b4aa8cc0713c3.esm.js.下載
+嘉義縣 美食外送┃線上訂立即送_ foodpanda_files/tv2track.js.下載
+嘉義縣 美食外送┃線上訂立即送_ foodpanda_files/universal_pixel.1.1.0.js.下載
+嘉義縣 美食外送┃線上訂立即送_ foodpanda_files/up(1).html
+嘉義縣 美食外送┃線上訂立即送_ foodpanda_files/up.html
+嘉義縣 美食外送┃線上訂立即送_ foodpanda_files/up_loader.1.1.0.js.下載
+臺南市 美食外送┃線上訂立即送_ foodpanda.html
+臺南市 美食外送┃線上訂立即送_ foodpanda_files/1200626643396295
+臺南市 美食外送┃線上訂立即送_ foodpanda_files/63747.f1e21fd35736d831c901.esm.js.下載
+臺南市 美食外送┃線上訂立即送_ foodpanda_files/74435.a3617b985d04440b2ef9.esm.js.下載
+臺南市 美食外送┃線上訂立即送_ foodpanda_files/7f85a56ba4.css
+臺南市 美食外送┃線上訂立即送_ foodpanda_files/82297.2310b4cc60fc56654594.esm.js.下載
+臺南市 美食外送┃線上訂立即送_ foodpanda_files/analytics.js.下載
+臺南市 美食外送┃線上訂立即送_ foodpanda_files/appboy.min.js.下載
+臺南市 美食外送┃線上訂立即送_ foodpanda_files/f(1).txt
+臺南市 美食外送┃線上訂立即送_ foodpanda_files/f.txt
+臺南市 美食外送┃線上訂立即送_ foodpanda_files/fbevents.js.下載
+臺南市 美食外送┃線上訂立即送_ foodpanda_files/framework.b9a2bc723137b1425693.esm.js.下載
+臺南市 美食外送┃線上訂立即送_ foodpanda_files/gtm.js.下載
+臺南市 美食外送┃線上訂立即送_ foodpanda_files/hero-home-tw.jpg
+臺南市 美食外送┃線上訂立即送_ foodpanda_files/init.js.下載
+臺南市 美食外送┃線上訂立即送_ foodpanda_files/js
+臺南市 美食外送┃線上訂立即送_ foodpanda_files/load-css-var-polyfill.v2.js.下載
+臺南市 美食外送┃線上訂立即送_ foodpanda_files/load-fid-polyfill.js.下載
+臺南市 美食外送┃線上訂立即送_ foodpanda_files/polyfill.min.js.下載
+臺南市 美食外送┃線上訂立即送_ foodpanda_files/seo-area-listing-microfrontend-seo-city-page-028713c3.2c5d7e2b1b9ab52fab1c.esm.js.下載
+臺南市 美食外送┃線上訂立即送_ foodpanda_files/seo-area-listing-microfrontend-seo-city-page-89925abd.cc62c7856f993a3e73ab.esm.js.下載
+臺南市 美食外送┃線上訂立即送_ foodpanda_files/seo-area-listing-microfrontend-seo-city-page-9a8b795a.4d95e012f279d91a3575.css
+臺南市 美食外送┃線上訂立即送_ foodpanda_files/seo-area-listing-microfrontend-seo-city-page-bde52cb3.1688271db05910470fcd.esm.js.下載
+臺南市 美食外送┃線上訂立即送_ foodpanda_files/seo-area-listing-microfrontend-seo-city-page-e96e9bea.0003c5e5eabde8901afd.esm.js.下載
+臺南市 美食外送┃線上訂立即送_ foodpanda_files/tv2track.js.下載
+臺南市 美食外送┃線上訂立即送_ foodpanda_files/up(1).html
+臺南市 美食外送┃線上訂立即送_ foodpanda_files/up.html
+臺南市 美食外送┃線上訂立即送_ foodpanda_files/up_loader.1.1.0.js.下載
+高雄市 美食外送┃線上訂立即送_ foodpanda.html
+高雄市 美食外送┃線上訂立即送_ foodpanda_files/3608.08cc421cfd582428b837.esm.js.下載
+高雄市 美食外送┃線上訂立即送_ foodpanda_files/74435.b8c544828b88d956c457.esm.js.下載
+高雄市 美食外送┃線上訂立即送_ foodpanda_files/7f85a56ba4.css
+高雄市 美食外送┃線上訂立即送_ foodpanda_files/81106.4b705d9f99902a5625de.esm.js.下載
+高雄市 美食外送┃線上訂立即送_ foodpanda_files/analytics.js.下載
+高雄市 美食外送┃線上訂立即送_ foodpanda_files/appboy.min.js.下載
+高雄市 美食外送┃線上訂立即送_ foodpanda_files/f(1).txt
+高雄市 美食外送┃線上訂立即送_ foodpanda_files/f.txt
+高雄市 美食外送┃線上訂立即送_ foodpanda_files/fbevents.js.下載
+高雄市 美食外送┃線上訂立即送_ foodpanda_files/framework.ebef64b2aacf6907ffa0.esm.js.下載
+高雄市 美食外送┃線上訂立即送_ foodpanda_files/gtm.js.下載
+高雄市 美食外送┃線上訂立即送_ foodpanda_files/hero-home-tw.jpg
+高雄市 美食外送┃線上訂立即送_ foodpanda_files/init.js.下載
+高雄市 美食外送┃線上訂立即送_ foodpanda_files/js
+高雄市 美食外送┃線上訂立即送_ foodpanda_files/load-css-var-polyfill.v2.js.下載
+高雄市 美食外送┃線上訂立即送_ foodpanda_files/load-fid-polyfill.js.下載
+高雄市 美食外送┃線上訂立即送_ foodpanda_files/polyfill.min.js.下載
+高雄市 美食外送┃線上訂立即送_ foodpanda_files/seo-area-listing-microfrontend-seo-city-page-89925abd.103cafce8c9c074f1613.esm.js.下載
+高雄市 美食外送┃線上訂立即送_ foodpanda_files/seo-area-listing-microfrontend-seo-city-page-9a8b795a.932dceec77a1e4dfeb65.css
+高雄市 美食外送┃線上訂立即送_ foodpanda_files/seo-area-listing-microfrontend-seo-city-page-bde52cb3.a6b90be75eb4980992f3.esm.js.下載
+高雄市 美食外送┃線上訂立即送_ foodpanda_files/seo-area-listing-microfrontend-seo-city-page-e2ae3a23.53c4704b4aa8cc0713c3.esm.js.下載
+高雄市 美食外送┃線上訂立即送_ foodpanda_files/tv2track.js.下載
+高雄市 美食外送┃線上訂立即送_ foodpanda_files/universal_pixel.1.1.0.js.下載
+高雄市 美食外送┃線上訂立即送_ foodpanda_files/up(1).html
+高雄市 美食外送┃線上訂立即送_ foodpanda_files/up.html
+高雄市 美食外送┃線上訂立即送_ foodpanda_files/up_loader.1.1.0.js.下載
