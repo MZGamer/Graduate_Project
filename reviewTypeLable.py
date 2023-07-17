@@ -148,8 +148,14 @@ for index, row in csv_data.iloc[start_row:].iterrows():
                     continue
             
 
-        
-        elif int(inputType) in typeDic:
+        typeSelect = None
+        try:
+            typeSelect = int(inputType)
+        except:
+            print("Wrong input")
+            continue
+
+        if typeSelect in typeDic:
             while True:
                 print("inputPositive(1) or Negative(-1) or notEdit(0)")
                 inputPositive = None
@@ -163,6 +169,8 @@ for index, row in csv_data.iloc[start_row:].iterrows():
                     write_to_csv(csv_data, output_file_path)
                     break
                 elif inputPositive == 0:
+                    csv_data.loc[index, typeDic[int(inputType)]] = 0
+                    write_to_csv(csv_data, output_file_path)
                     break
                 print("Wrong input")
         else:
