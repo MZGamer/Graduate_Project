@@ -47,8 +47,8 @@ def enter_help():
 pd.set_option('display.max_colwidth', None)
 
 # 假設你的CSV檔案名稱為data.csv，並且與程式碼檔案位於同一個目錄下
-file_path = 'reviewType.csv'
-output_file_path = 'reviewType.csv'
+file_path = './reviewType.csv'
+output_file_path = './reviewType.csv'
 # 呼叫函式來讀取CSV檔案
 csv_data = read_csv_file(file_path)
 
@@ -118,7 +118,12 @@ for index, row in csv_data.iloc[start_row:].iterrows():
                 for key, value in typeDic.items():
                     print(f"{key}: {value}", end=" | ")
                 print()
-                removeRow = int(input())
+                removeRow = None
+                try:
+                    removeRow = int(input())
+                except:
+                    print("Wrong input")
+                    continue
                 if(removeRow == -1):
                     print("Can't remove NonImportant")
                     continue
@@ -147,7 +152,12 @@ for index, row in csv_data.iloc[start_row:].iterrows():
         elif int(inputType) in typeDic:
             while True:
                 print("inputPositive(1) or Negative(-1) or notEdit(0)")
-                inputPositive = int(input())
+                inputPositive = None
+                try:
+                    inputPositive = int(input())
+                except:
+                    print("Wrong input")
+                    continue
                 if inputPositive == 1 or inputPositive == -1:
                     csv_data.loc[index, typeDic[int(inputType)]] = inputPositive
                     write_to_csv(csv_data, output_file_path)
