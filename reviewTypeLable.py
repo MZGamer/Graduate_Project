@@ -31,8 +31,16 @@ def clear_console():
     # 檢查作業系統，並執行特定的清空螢幕指令
     os.system('cls' if os.name == 'nt' else 'clear')
 
-def write_to_csv(df, file_path):
-    df.to_csv(file_path, index=False)
+def write_to_csv(df, file_path, errCount = 0):
+    try:
+        df.to_csv(file_path, index=False)
+    except:
+        if errCount > 3:
+            print("write to csv failed")
+            raise Exception("write to csv failed")
+        else:
+            errCount += 1
+            write_to_csv(df, file_path, errCount)
 
 def read_csv_file(file_path):
     data = pd.read_csv(file_path)
