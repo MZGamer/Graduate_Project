@@ -72,7 +72,7 @@ typeDic[-1] = 'NonImportant'
 done = []
 for index, row in csv_data.iloc[0:].iterrows():
     for i in (columns[3:]):
-        if row[i] == 1 or row[i] == -1:
+        if row[i] != 0:
             done.append(index)
             break
 print("following data is completed:")
@@ -165,18 +165,18 @@ for index, row in csv_data.iloc[start_row:].iterrows():
 
         if typeSelect in typeDic:
             while True:
-                print("inputPositive(1) or Negative(-1) or notEdit(0)")
-                inputPositive = None
+                print("input Score(1-5) or notEdit(0)")
+                inputScore = None
                 try:
-                    inputPositive = int(input())
+                    inputScore = int(input())
                 except:
                     print("Wrong input")
                     continue
-                if inputPositive == 1 or inputPositive == -1:
-                    csv_data.loc[index, typeDic[int(inputType)]] = inputPositive
+                if inputScore > 0 and inputScore <= 5:
+                    csv_data.loc[index, typeDic[int(inputType)]] = inputScore
                     write_to_csv(csv_data, output_file_path)
                     break
-                elif inputPositive == 0:
+                elif inputScore == 0:
                     csv_data.loc[index, typeDic[int(inputType)]] = 0
                     write_to_csv(csv_data, output_file_path)
                     break
