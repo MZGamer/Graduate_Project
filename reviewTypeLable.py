@@ -50,7 +50,7 @@ def enter_help():
     print('Enter Type:')
     for key, value in typeDic.items():
         print(f"{key}: {value}", end=" | ")
-    print(f"q: quit, a: add new type, n: next row, r: remove type")
+    print(f"q: quit, a: add new type, n: next row, r: remove type, c: clear all type, ni: NonImportant")
     
 pd.set_option('display.max_colwidth', None)
 
@@ -119,6 +119,17 @@ for index, row in csv_data.iloc[start_row:].iterrows():
             break
         elif inputType == 'n':
             next = True
+            break
+        elif inputType == 'c':
+            for key, value in typeDic.items():
+                csv_data.loc[index, typeDic[key]] = 0
+            write_to_csv(csv_data, output_file_path)
+            break
+        elif inputType == 'ni':
+            for key, value in typeDic.items():
+                csv_data.loc[index, typeDic[key]] = 0
+            csv_data.loc[index, 'NonImportant'] = 1
+            write_to_csv(csv_data, output_file_path)
             break
         elif inputType == 'r':
             while True:
