@@ -124,13 +124,13 @@ for index, row in csv_data.iloc[start_row:].iterrows():
             for key, value in typeDic.items():
                 csv_data.loc[index, typeDic[key]] = 0
             write_to_csv(csv_data, output_file_path)
-            break
+            
         elif inputType == 'ni':
             for key, value in typeDic.items():
                 csv_data.loc[index, typeDic[key]] = 0
             csv_data.loc[index, 'NonImportant'] = 1
             write_to_csv(csv_data, output_file_path)
-            break
+             
         elif inputType == 'r':
             while True:
                 print("Enter Row to remove, -999 to quit:")
