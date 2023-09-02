@@ -72,7 +72,7 @@ typeDic[-1] = 'NonImportant'
 done = []
 for index, row in csv_data.iloc[0:].iterrows():
     for i in (columns[3:]):
-        if row[i] == 1 or row[i] == -1:
+        if row[i] != 0:
             done.append(index)
             break
 print("following data is completed:")
