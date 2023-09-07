@@ -17,13 +17,13 @@ def read_csv_file(file_path):
     data = pd.read_csv(file_path)
     return data
 
-file_path= './reviewType.csv'
+file_path= './reviewTypeMerge.csv'
 output_file_path = './reviewTypeClean.csv'
 # 呼叫函式來讀取CSV檔案
 csv_data = read_csv_file(file_path)
 
 columns = csv_data.columns
-csv_data.drop(csv_data.index[3000:], inplace=True)
+csv_data.drop(csv_data.index[7000:], inplace=True)
 
 all = len(csv_data.index)
 counter = 0
@@ -32,11 +32,11 @@ for index, row in csv_data.iloc[0:].iterrows():
     print(f"{all} / {counter}")
     counter += 1
     flag = False
-    if(row["NonImportant"] == 1):
+    if(row["NonImportant"] != 0):
         droplist.append(index)
         continue
     for i in (columns[4:]):
-        if row[i] == 1 or row[i] == -1:
+        if row[i] != 0:
             flag = True
             break
     if flag == False:

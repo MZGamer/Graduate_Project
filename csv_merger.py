@@ -35,10 +35,10 @@ for i in csv_dataA.index:
         step += 1
         print(f"{step}%")
     for r in (columns[3:]):
-        if csv_dataA.iloc[i][r] == 1 or csv_dataA.iloc[i][r] == -1:
+        if i <= 1277:
             csv_dataMerge.iloc[i] = csv_dataA.iloc[i]
             break
-        elif csv_dataB.iloc[i][r] == 1 or csv_dataB.iloc[i][r] == -1:
+        else:
             csv_dataMerge.iloc[i] = csv_dataB.iloc[i]
             break
 
