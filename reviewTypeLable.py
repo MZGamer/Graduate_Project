@@ -2,6 +2,9 @@ import csv
 import pandas as pd
 import os
 
+
+
+
 def from_x_to_x(numbers):
     result = []
     start = None
@@ -34,10 +37,10 @@ def clear_console():
 def write_to_csv(df, file_path, errCount = 0):
     try:
         df.to_csv(file_path, index=False)
+        return False
     except:
         if errCount > 3:
-            print("write to csv failed")
-            raise Exception("write to csv failed")
+            return True
         else:
             errCount += 1
             write_to_csv(df, file_path, errCount)
@@ -51,6 +54,8 @@ def enter_help():
     for key, value in typeDic.items():
         print(f"{key}: {value}", end=" | ")
     print(f"q: quit, a: add new type, n: next row, r: remove type, c: clear all type, ni: NonImportant")
+    if(csvsaveErr):
+        print("/n THERE IS A CSV SAVE ERROR, PLEASE NOT CLOSE THE PROGRAM UNTIL NEXT WRITE")
     
 pd.set_option('display.max_colwidth', None)
 
@@ -60,6 +65,8 @@ def refreshInfo(index):
     print(csv_data.loc[index])
     enter_help()
 
+
+csvsaveErr = False
 # 假設你的CSV檔案名稱為data.csv，並且與程式碼檔案位於同一個目錄下
 file_path = './reviewType.csv'
 output_file_path = './reviewType.csv'
@@ -114,7 +121,7 @@ for index, row in csv_data.iloc[start_row:].iterrows():
                 continue
             typeDic[len(typeDic)] = newType
             csv_data[newType] = '0'
-            write_to_csv(csv_data, output_file_path)
+            csvsaveErr = write_to_csv(csv_data, output_file_path)
             
         elif inputType == 'q':
             quit = True
@@ -125,13 +132,13 @@ for index, row in csv_data.iloc[start_row:].iterrows():
         elif inputType == 'c':
             for key, value in typeDic.items():
                 csv_data.loc[index, typeDic[key]] = 0
-            write_to_csv(csv_data, output_file_path)
+            csvsaveErr = write_to_csv(csv_data, output_file_path)
             continue
         elif inputType == "ni":
             for key, value in typeDic.items():
                 csv_data.loc[index, typeDic[key]] = 0
             csv_data.loc[index, 'NonImportant'] = 1
-            write_to_csv(csv_data, output_file_path)
+            csvsaveErr = write_to_csv(csv_data, output_file_path)
             refreshInfo(index)
             continue
              
@@ -160,7 +167,7 @@ for index, row in csv_data.iloc[start_row:].iterrows():
                             else:
                                 csv_data = csv_data.drop(columns=[typeDic[removeRow]])
                                 del typeDic[removeRow]
-                                write_to_csv(csv_data, output_file_path)
+                                csvsaveErr = write_to_csv(csv_data, output_file_path)
                                 break
                         else:
                             break
@@ -189,11 +196,11 @@ for index, row in csv_data.iloc[start_row:].iterrows():
                     continue
                 if inputScore > 0 and inputScore <= 5:
                     csv_data.loc[index, typeDic[int(inputType)]] = inputScore
-                    write_to_csv(csv_data, output_file_path)
+                    csvsaveErr = write_to_csv(csv_data, output_file_path)
                     break
                 elif inputScore == 0:
                     csv_data.loc[index, typeDic[int(inputType)]] = 0
-                    write_to_csv(csv_data, output_file_path)
+                    csvsaveErr = write_to_csv(csv_data, output_file_path)
                     break
                 print("Wrong input")
         else:
