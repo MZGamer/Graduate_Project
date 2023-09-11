@@ -1,6 +1,7 @@
 import csv
 import pandas as pd
 import os
+import numpy as np
 
 def write_to_csv(df, file_path, errCount = 0):
     try:
@@ -17,29 +18,39 @@ def read_csv_file(file_path):
     data = pd.read_csv(file_path)
     return data
 
+
 file_pathA = './reviewTypeA.csv'
 file_pathB= './reviewTypeB.csv'
 output_file_path = './reviewTypeMerge.csv'
+
+MERGESIZE = 10000
+
 # 呼叫函式來讀取CSV檔案
 csv_dataA = read_csv_file(file_pathA)
 csv_dataB = read_csv_file(file_pathB)
 csv_dataMerge = read_csv_file(file_pathA)
 
 columns = csv_dataA.columns
-print(csv_dataA.index)
-chk = int(len(csv_dataA.index) / 100)
+
+chk = int(MERGESIZE / 100)
 step = 0
+
+deafult = np.zeros((1,len(csv_dataA.iloc[0][3:].values)), dtype='O')[0]
+
+#test = np.array(csv_dataA.iloc[100000][3:].values)
+#print(np.array_equal(test, deafult))
 for i in csv_dataA.index:
-    print(i)
-    if i+1 % chk == 0:
+    #print(i)
+    if (i+1) % chk == 0:
         step += 1
         print(f"{step}%")
-    for r in (columns[3:]):
-        if i <= 1277:
-            csv_dataMerge.iloc[i] = csv_dataA.iloc[i]
-            break
-        else:
-            csv_dataMerge.iloc[i] = csv_dataB.iloc[i]
-            break
+
+    test = csv_dataA.iloc[i][3:].values
+    if i >= MERGESIZE:
+        break
+    if np.array_equal(test, deafult) == False:
+        csv_dataMerge.iloc[i] = csv_dataA.iloc[i]
+    else:
+        csv_dataMerge.iloc[i] = csv_dataB.iloc[i]
 
 write_to_csv(csv_dataMerge, output_file_path)
