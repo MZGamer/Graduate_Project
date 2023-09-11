@@ -1,6 +1,7 @@
 import csv
 import pandas as pd
 import os
+import numpy as np
 
 def write_to_csv(df, file_path, errCount = 0):
     try:
@@ -17,13 +18,17 @@ def read_csv_file(file_path):
     data = pd.read_csv(file_path)
     return data
 
+
 file_path= './reviewTypeMerge.csv'
 output_file_path = './reviewTypeClean.csv'
 # 呼叫函式來讀取CSV檔案
 csv_data = read_csv_file(file_path)
 
+CLEANSIZE = 10000
+deafult = np.zeros((1,len(csv_data.iloc[0][3:].values)), dtype='O')[0]
+
 columns = csv_data.columns
-csv_data.drop(csv_data.index[7000:], inplace=True)
+csv_data.drop(csv_data.index[CLEANSIZE:], inplace=True)
 
 all = len(csv_data.index)
 counter = 0
@@ -35,11 +40,8 @@ for index, row in csv_data.iloc[0:].iterrows():
     if(row["NonImportant"] != 0):
         droplist.append(index)
         continue
-    for i in (columns[4:]):
-        if row[i] != 0:
-            flag = True
-            break
-    if flag == False:
+    test = csv_data.iloc[index][3:].values
+    if np.array_equal(test, deafult) == True:
         droplist.append(index)
         continue
 

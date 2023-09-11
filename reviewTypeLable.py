@@ -49,7 +49,7 @@ def read_csv_file(file_path):
     data = pd.read_csv(file_path)
     return data
 
-def enter_help():
+def enter_help(csvsaveErr):
     print('Enter Type:')
     for key, value in typeDic.items():
         print(f"{key}: {value}", end=" | ")
@@ -59,16 +59,16 @@ def enter_help():
     
 pd.set_option('display.max_colwidth', None)
 
-def refreshInfo(index):
+def refreshInfo(index,csvsaveErr):
     clear_console()
     print(f"data No.{index}")
     print(csv_data.loc[index])
-    enter_help()
+    enter_help(csvsaveErr)
 
 
 csvsaveErr = False
 # 假設你的CSV檔案名稱為data.csv，並且與程式碼檔案位於同一個目錄下
-file_path = './reviewTypeMerge.csv'
+file_path = './reviewType.csv'
 output_file_path = './reviewType.csv'
 # 呼叫函式來讀取CSV檔案
 csv_data = read_csv_file(file_path)
@@ -111,7 +111,7 @@ for index, row in csv_data.iloc[start_row:].iterrows():
     next = False
     #print row
     while True:
-        refreshInfo(index)
+        refreshInfo(index,csvsaveErr)
         inputType = input()
         
         if inputType == 'a':
@@ -139,7 +139,7 @@ for index, row in csv_data.iloc[start_row:].iterrows():
                 csv_data.loc[index, typeDic[key]] = 0
             csv_data.loc[index, 'NonImportant'] = 1
             csvsaveErr = write_to_csv(csv_data, output_file_path)
-            refreshInfo(index)
+            refreshInfo(index,csvsaveErr)
             continue
              
         elif inputType == 'r':
@@ -207,7 +207,7 @@ for index, row in csv_data.iloc[start_row:].iterrows():
             print("Wrong input")
             continue
 
-        refreshInfo(index)
+        refreshInfo(index,csvsaveErr)
 
     if quit:
         break
