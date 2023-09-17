@@ -23,7 +23,7 @@ file_pathA = './reviewTypeA.csv'
 file_pathB= './reviewTypeB.csv'
 output_file_path = './reviewTypeMerge.csv'
 
-MERGESIZE = 10000
+MERGESIZE = 11000
 
 # 呼叫函式來讀取CSV檔案
 csv_dataA = read_csv_file(file_pathA)
@@ -46,7 +46,7 @@ for i in csv_dataA.index:
         print(f"{step}%")
 
     test = csv_dataA.iloc[i][3:].values
-    if i >= MERGESIZE:
+    if i > MERGESIZE:
         break
     if np.array_equal(test, deafult) == False:
         csv_dataMerge.iloc[i] = csv_dataA.iloc[i]

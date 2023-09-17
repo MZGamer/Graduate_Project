@@ -24,11 +24,11 @@ output_file_path = './reviewTypeClean.csv'
 # 呼叫函式來讀取CSV檔案
 csv_data = read_csv_file(file_path)
 
-CLEANSIZE = 10000
+CLEANSIZE = 11000
 deafult = np.zeros((1,len(csv_data.iloc[0][3:].values)), dtype='O')[0]
 
 columns = csv_data.columns
-csv_data.drop(csv_data.index[CLEANSIZE:], inplace=True)
+csv_data.drop(csv_data.index[CLEANSIZE+1:], inplace=True)
 
 all = len(csv_data.index)
 counter = 0
