@@ -69,7 +69,7 @@ def refreshInfo(index,csvsaveErr):
 csvsaveErr = False
 # 假設你的CSV檔案名稱為data.csv，並且與程式碼檔案位於同一個目錄下
 file_path = './maybeNegativeOrNature_foodQuality.csv'
-output_file_path = './reviewType.csv'
+output_file_path = './maybeNegativeOrNature_foodQuality.csv'
 # 呼叫函式來讀取CSV檔案
 csv_data = read_csv_file(file_path)
 
