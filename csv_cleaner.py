@@ -19,8 +19,8 @@ def read_csv_file(file_path):
     return data
 
 
-file_path= './reviewTypeMerge.csv'
-output_file_path = './reviewTypeClean.csv'
+file_path= './maybeNegativeOrNature_foodQualityMerge.csv'
+output_file_path = './maybeNegativeOrNature_foodQualityClean.csv'
 # 呼叫函式來讀取CSV檔案
 csv_data = read_csv_file(file_path)
 

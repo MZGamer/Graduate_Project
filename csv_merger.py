@@ -19,11 +19,11 @@ def read_csv_file(file_path):
     return data
 
 
-file_pathA = './reviewTypeA.csv'
-file_pathB= './reviewTypeB.csv'
-output_file_path = './reviewTypeMerge.csv'
+file_pathA = './maybeNegativeOrNature_foodQualityA.csv'
+file_pathB= './maybeNegativeOrNature_foodQualityB.csv'
+output_file_path = './maybeNegativeOrNature_foodQualityMerge.csv'
 
-MERGESIZE = 11000
+
 
 # 呼叫函式來讀取CSV檔案
 csv_dataA = read_csv_file(file_pathA)
@@ -31,7 +31,7 @@ csv_dataB = read_csv_file(file_pathB)
 csv_dataMerge = read_csv_file(file_pathA)
 
 columns = csv_dataA.columns
-
+MERGESIZE = min(11000,len(csv_dataA.index))
 chk = int(MERGESIZE / 100)
 step = 0
 
