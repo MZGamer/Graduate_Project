@@ -19,21 +19,17 @@ def read_csv_file(file_path):
     return data
 
 
-file_pathA = './reviewType_Empty.csv'
-file_pathB= './maybeNegativeOrNature_foodQualityMerge.csv'
-output_file_path = './reviewType_Empty2wTo4wV2.csv'
+file_pathA = './maybeNegative_Service.csv'
+file_pathB= './reviewType_Empty2wTo4wV2.csv'
+output_file_path = './reviewType_Empty2wTo4wV3.csv'
 
 
 
 # 呼叫函式來讀取CSV檔案
 csv_dataA = read_csv_file(file_pathA)
 csv_dataB = read_csv_file(file_pathB)
-csv_dataMerge = read_csv_file(file_pathA)
 
 columns = csv_dataA.columns
-MERGESIZE = min(11000,len(csv_dataA.index))
-chk = int(MERGESIZE / 100)
-step = 0
 
 res = pd.concat([csv_dataB,csv_dataA],axis=0, ignore_index=True)
 res.drop_duplicates(subset=['Comment'], keep='last', inplace=True)

@@ -19,12 +19,14 @@ def read_csv_file(file_path):
     return data
 
 
-file_path= './maybeNegativeOrNature_foodQualityMerge.csv'
-output_file_path = './maybeNegativeOrNature_foodQualityClean.csv'
+file_path= './reviewType_Empty2wTo4wV3.csv'
+output_file_path = './reviewType_Empty2wTo4wV3.csv'
+DETECTEMPTY = False
+
 # 呼叫函式來讀取CSV檔案
 csv_data = read_csv_file(file_path)
 
-CLEANSIZE = 11000
+CLEANSIZE = min(1100000000,len(csv_data.index))
 deafult = np.zeros((1,len(csv_data.iloc[0][3:].values)), dtype='O')[0]
 
 columns = csv_data.columns
@@ -41,7 +43,7 @@ for index, row in csv_data.iloc[0:].iterrows():
         droplist.append(index)
         continue
     test = csv_data.iloc[index][3:].values
-    if np.array_equal(test, deafult) == True:
+    if np.array_equal(test, deafult) == DETECTEMPTY:
         droplist.append(index)
         continue
 
