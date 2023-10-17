@@ -1,3 +1,7 @@
 2023/10/12:
 1. reviewDatasetV2
     reviewDatasetV1 + maybeNegative_Service
+
+2023/10/17:
+1. 1. reviewDatasetV3
+    reviewDatasetV2 + maybePositive_or_Nature_Price
