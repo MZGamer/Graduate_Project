@@ -19,8 +19,8 @@ def read_csv_file(file_path):
     return data
 
 
-file_path= './reviewType_Empty2wTo4wV4.csv'
-output_file_path = './reviewType_Empty2wTo4wV4.csv'
+file_path= './reviewType_Empty2wTo4wV5.csv'
+output_file_path = './reviewType_Empty2wTo4wV5.csv'
 DETECTEMPTY = False
 
 # 呼叫函式來讀取CSV檔案
