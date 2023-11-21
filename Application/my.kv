@@ -1,0 +1,65 @@
+
+
+
+
+<MyLayout>
+    GridLayout:
+        cols: 2
+        size: root.width, root.height
+        orientation: 'tb-lr'
+        GridLayout:
+            cols: 1
+            rows: 8
+            size_hint_x: 0.1
+            Button:
+                text: "Button 1"
+            Button:
+                text: "Button 2"
+            Label:
+                text: ""
+            Label:
+                text: ""
+            Label:
+                text: ""
+            Label:
+                text: ""
+            Label:
+                text: ""
+            Label:
+                text: ""
+                
+        GridLayout:
+            cols: 1
+
+            Button:
+                GridLayout:
+                    col:2
+                    GridLayout:
+                        cols: 1
+                        Label:
+                            text: "吳家牛肉麵"
+                            font_size: '32dp'
+                            halign: 'left'
+                            valign: 'middle'
+                        Label:
+                            text: "嘉義市東區小雅路235號"
+                            font_size: '24dp'
+                            halign: 'left'
+                            valign: 'middle'
+                    GridLayout:
+                        cols: 1
+                        size_hint_x: 0.5
+                        Label:
+                            text: "4.5/5"
+                            font_size: '40dp'
+                            halign: 'right'
+                            valign: 'middle'
+
+            Label:
+                text: "Label 3"
+            Label:
+                text: "Label 4"
+            Label:
+                text: "Label 5"
+            TextInput:
+                multiline: False
