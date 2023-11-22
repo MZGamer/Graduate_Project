@@ -120,3 +120,10 @@ reviewTypeClean.csv
 reviewTypeA.csv
 reviewTypeA.csv
 gpt.ipynb
+Application/__pycache__/DB.cpython-39.pyc
+Application/__pycache__/googleAPI.cpython-39.pyc
+Application/__pycache__/googleMapAPI.cpython-39.pyc
+Application/__pycache__/GPTCall.cpython-39.pyc
+Application/__pycache__/listGenerate.cpython-39.pyc
+Application/__pycache__/restaurant.cpython-39.pyc
+Application/__pycache__/reviewGetter.cpython-39.pyc
