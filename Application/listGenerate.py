@@ -4,6 +4,7 @@ from googleAPI import googleAPI
 from GPTCall import GPTCall
 from DB import DB
 from reviewGetter import getReview
+from transformerModel import transformerModel
 
 @dataclass
 class restaurantListGenerator:
@@ -12,13 +13,16 @@ class restaurantListGenerator:
     DB: DB
     PEREXTRACT: int
     defTest: bool
+    model: transformerModel
 
-    def __init__(self, googleAPI, GPTCall, DB, defTest = False):
+
+    def __init__(self, googleAPI, GPTCall, DB, model, defTest = False):
         self.googleAPI = googleAPI
         self.GPTCall = GPTCall
         self.DB = DB
         self.PEREXTRACT = 3
         self.defTest = defTest
+        self.model = model
 
     def GPT_restaurant_list_Analyze(self, GPTResponse):
         print("-----------------Starting Analyze Restaurant List from GPT-----------------")
@@ -55,7 +59,7 @@ class restaurantListGenerator:
         randomRestaurantCount = 0
         restaurant_list = []
         DBBuildingList = []
-        r = self.googleAPI.googleSearch(question= userPoint + target)
+        """r = self.googleAPI.googleSearch(question= userPoint + target)
         searchResult = self.googleAPI.searchResultExtract(r)
 
         #Random Restaurant
@@ -70,10 +74,11 @@ class restaurantListGenerator:
             chkedRestaurantList = self.googleAPI.distChk(userPoint,chkedRestaurantList)
             DBBuildingList.extend(chkedRestaurantList)
 
-            randomRestaurantCount = len(restaurant_list)
+            randomRestaurantCount = len(restaurant_list)"""
         while(startPoint <= 10):
 
-            GPTResponse= (self.GPTCall.restaurantGenerate(userPoint, 1, restaurantNeeded, searchResult,startPoint, self.PEREXTRACT))
+            #GPTResponse= (self.GPTCall.restaurantGenerate(userPoint, 1, restaurantNeeded, searchResult,startPoint, self.PEREXTRACT))
+            GPTResponse="1. 大雅牛排"
             inp = input("checkPoint Enter exit to stop ,other to continue")
 
             if(inp == "exit"):
@@ -107,11 +112,29 @@ class restaurantListGenerator:
             print()
 
         print("-----------------DB BUILDING-----------------")
-        DBBuildingList = getReview(DBBuildingList)
-        for i in range(len(DBBuildingList)):
-            print(DBBuildingList[i])
-            print(f"review{DBBuildingList[i].review}")
-            print()
+        DBBuildingList = getReview([DBBuildingList[0]])
+        for restaurant in DBBuildingList:
+            forType, forReview, forFinal = self.model.textPreProcess(restaurant.review)
+            restaurant.type = self.model.typePredict(forType)
+            finalScore, reviewEachScore = self.model.reviewPredict(forReview)
+            review = ""
+            print(reviewEachScore)
+            print(len(forFinal))
+            print(len(reviewEachScore))
+            print(len(reviewEachScore[0]))
+            print(len(reviewEachScore[1]))
+            print(len(reviewEachScore[2]))
+            print(len(reviewEachScore[3]))
+            print(len(reviewEachScore[4]))
+            for i in range(len(forFinal)):
+                if(i != 0):
+                    review += "|"
+                review += f"{reviewEachScore[0][i]},{reviewEachScore[1][i]},{reviewEachScore[2][i]},{reviewEachScore[3][i]},{reviewEachScore[4][i]}^{forFinal[i]}"
+            restaurant.review = review
+            restaurant.detailRating = finalScore
+            
+        self.DB.DBAddRestaurant(DBBuildingList)
+        print("-----------------Tack Complete-----------------")
 
 
 

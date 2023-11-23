@@ -13,6 +13,7 @@ from googleAPI import googleAPI
 from GPTCall import GPTCall
 from DB import DB
 from listGenerate import restaurantListGenerator
+from transformerModel import transformerModel
 #Test Panel
 defTest = True
 
@@ -26,11 +27,27 @@ RANDOMNEED = 10
 DATAPREEXTRACT = 3
 
 #DB
-
 file_path= './restaurantDB.csv'
+
+#model
+modelPath = "D:/Work/Project/School_Homework/Graduate_Project/predict_Model"
+typeVersion = "1121"
+reviewVersion = "1123"
+
 
 GPTCall = GPTCall(OPENAIAPI, defTest)
 googleAPI = googleAPI(GOOGLECLOUDAPI, SEARCHENGINEID, TOOFARDIST, defTest)
 DB = DB(file_path, defTest)
-restaurantListGenerator = restaurantListGenerator(googleAPI, GPTCall, DB, defTest)
+model = transformerModel(modelPath, typeVersion, reviewVersion)
+restaurantListGenerator = restaurantListGenerator(googleAPI, GPTCall, DB, model,defTest)
+
+
 restaurantListGenerator.task("嘉義市", "咖哩", RESTAURANTNEED, RANDOMNEED)
+"""
+testCase = DB.DB["Review"][1]
+forType, forReview = model.textPreProcess(testCase)
+finalScore, reviewEachScore = model.reviewPredict(forReview)
+print(finalScore)"""
+#test = Restaurant("test", "test", "test", "test", {'lat': 1, 'lng': 2}, "", 0,0, [0,0,0,0,0], "")
+#DB.DBAddRestaurant([test])
+#"[3.0588235294117645, 4.0, 3.8461538461538463, 3.1666666666666665, 3.731132075471698]"穀谷

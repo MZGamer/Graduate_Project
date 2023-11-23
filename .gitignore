@@ -127,3 +127,11 @@ Application/__pycache__/GPTCall.cpython-39.pyc
 Application/__pycache__/listGenerate.cpython-39.pyc
 Application/__pycache__/restaurant.cpython-39.pyc
 Application/__pycache__/reviewGetter.cpython-39.pyc
+Application/UI/UI/Library
+Application/UI/UI/Logs
+Application/UI/UI/obj
+Application/UI/UI/Packages
+Application/UI/UI/ProjectSettings
+Application/UI/UI/Temp
+Application/UI/UI/UserSettings
+Application/UI/UI/.vs
