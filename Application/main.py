@@ -14,6 +14,9 @@ from GPTCall import GPTCall
 from DB import DB
 from listGenerate import restaurantListGenerator
 from transformerModel import transformerModel
+from networkManager import server
+from package import *
+import json
 #Test Panel
 defTest = True
 
@@ -34,15 +37,34 @@ modelPath = "D:/Work/Project/School_Homework/Graduate_Project/predict_Model"
 typeVersion = "1121"
 reviewVersion = "1123"
 
+#server
+HOST = '127.0.0.1'
+PORT = 2933
+
+def packageAnalyze(package):
+    if package.ACTION == ACTION.ASKGPT:
+        restaurantListGenerator.task(package.requestLocation, package.requestTarget, 10, 10)
+    """elif package.ACTION == ACTION.REQUESTRESTAURANT:
+        return self.requestRestaurant(package)
+    else:
+        return Package()"""
+
 
 GPTCall = GPTCall(OPENAIAPI, defTest)
 googleAPI = googleAPI(GOOGLECLOUDAPI, SEARCHENGINEID, TOOFARDIST, defTest)
 DB = DB(file_path, defTest)
 model = transformerModel(modelPath, typeVersion, reviewVersion)
-restaurantListGenerator = restaurantListGenerator(googleAPI, GPTCall, DB, model,defTest)
+server = server(HOST, PORT)
+restaurantListGenerator = restaurantListGenerator(googleAPI, GPTCall, DB, model, server, defTest)
+server.start()
+
+while True:
+    pkg = server.listenPackage()
+    if pkg != None:
+        packageAnalyze(pkg)
 
 
-restaurantListGenerator.task("嘉義市", "咖哩", RESTAURANTNEED, RANDOMNEED)
+#restaurantListGenerator.task("嘉義市", "咖哩", RESTAURANTNEED, RANDOMNEED)
 """
 testCase = DB.DB["Review"][1]
 forType, forReview = model.textPreProcess(testCase)

@@ -5,7 +5,8 @@ from GPTCall import GPTCall
 from DB import DB
 from reviewGetter import getReview
 from transformerModel import transformerModel
-
+from networkManager import server
+from package import *
 @dataclass
 class restaurantListGenerator:
     googleAPI: googleAPI
@@ -14,15 +15,18 @@ class restaurantListGenerator:
     PEREXTRACT: int
     defTest: bool
     model: transformerModel
+    server: server
 
 
-    def __init__(self, googleAPI, GPTCall, DB, model, defTest = False):
+    def __init__(self, googleAPI, GPTCall, DB, model, server, defTest = False):
         self.googleAPI = googleAPI
         self.GPTCall = GPTCall
         self.DB = DB
         self.PEREXTRACT = 3
         self.defTest = defTest
         self.model = model
+        self.server = server
+
 
     def GPT_restaurant_list_Analyze(self, GPTResponse):
         print("-----------------Starting Analyze Restaurant List from GPT-----------------")
@@ -59,7 +63,7 @@ class restaurantListGenerator:
         randomRestaurantCount = 0
         restaurant_list = []
         DBBuildingList = []
-        """r = self.googleAPI.googleSearch(question= userPoint + target)
+        r = self.googleAPI.googleSearch(question= userPoint + target)
         searchResult = self.googleAPI.searchResultExtract(r)
 
         #Random Restaurant
@@ -74,15 +78,16 @@ class restaurantListGenerator:
             chkedRestaurantList = self.googleAPI.distChk(userPoint,chkedRestaurantList)
             DBBuildingList.extend(chkedRestaurantList)
 
-            randomRestaurantCount = len(restaurant_list)"""
+            randomRestaurantCount = len(restaurant_list)
         while(startPoint <= 10):
-
-            #GPTResponse= (self.GPTCall.restaurantGenerate(userPoint, 1, restaurantNeeded, searchResult,startPoint, self.PEREXTRACT))
-            GPTResponse="1. 大雅牛排"
             inp = input("checkPoint Enter exit to stop ,other to continue")
-
             if(inp == "exit"):
                 break
+            GPTResponse= (self.GPTCall.restaurantGenerate(userPoint, 1, restaurantNeeded, searchResult,startPoint, self.PEREXTRACT))
+            #GPTResponse="1. 大雅牛排"
+            
+
+
 
             nameChkedRestaurantList = self.GPT_restaurant_list_Analyze(GPTResponse)
             
@@ -110,6 +115,8 @@ class restaurantListGenerator:
         for restaurant in restaurant_list:
             restaurant.print()
             print()
+        package = Package(ACTION.RECEIVEDATA, "", "", "", restaurant_list)
+        self.server.sendPackage(package)
 
         print("-----------------DB BUILDING-----------------")
         DBBuildingList = getReview([DBBuildingList[0]])

@@ -10,28 +10,44 @@ public enum ACTION {
     REQUESTRESTAURANT
 }
 public class Package {
-    public int src;
     public ACTION ACTION;
-    public int index;
-    public List<int> target;
-    public List<PlayerStatus> playerStatuses;
-    public bool askCounter;
+    public string restaurantRequestName;
+    public string requestLocation;
+    public string requestTarget;
+    public List<Restaurant> restaurantData;
 
-    public Package(int src, ACTION ACTION = ACTION.NULL, int index = -1, List<int> target = null, bool askCounter = false, List<PlayerStatus> playerStatuses = null) {
-        this.src = src;
+    public Package(ACTION ACTION = ACTION.NULL, string requestLacation = "", string requestTarget = "") {
         this.ACTION = ACTION;
-        this.playerStatuses = playerStatuses;
-        this.index = index;
-        this.target = target;
-        this.askCounter = askCounter;
+        this.restaurantRequestName = "";
+        this.requestLocation = requestLacation;
+        this.requestTarget = requestTarget;
+        this.restaurantData = new List<Restaurant>(0);
     }
-    public Package(int src, ACTION ACTION = ACTION.NULL, int index = -1, int target = 0, bool askCounter = false, List<PlayerStatus> playerStatuses = null) {
-        this.src = src;
+    public Package(ACTION ACTION = ACTION.NULL, string restaurantRequestName = "") {
         this.ACTION = ACTION;
-        this.playerStatuses = playerStatuses;
-        this.index = index;
-        this.target = new List<int>();
-        this.target.Add(target);
-        this.askCounter = askCounter;
+        this.restaurantRequestName = restaurantRequestName;
+        this.requestLocation = "";
+        this.requestTarget = "";
+        this.restaurantData = new List<Restaurant>(0);
+    }
+
+    public Package(ACTION ACTION = ACTION.NULL, List<Restaurant> restaurantData = null) {
+        this.ACTION = ACTION;
+        this.restaurantRequestName = "";
+        this.requestLocation = "";
+        this.requestTarget = "";
+        this.restaurantData = restaurantData;
+    }
+    public Package(ACTION ACTION, string restaurantRequestName = "", string requestLocation = "", string requestTarget = "", List<Restaurant> restaurantData = null) {
+        this.ACTION = ACTION;
+        this.restaurantRequestName=restaurantRequestName;
+        this.requestLocation = requestLocation;
+        this.requestTarget = requestTarget;
+        this.restaurantData = restaurantData;
+    }
+    public string toString() {
+        string s = "";
+
+        return s;
     }
 }

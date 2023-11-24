@@ -11,7 +11,7 @@ class Restaurant:
     command: str
     GRating: float
     raitingTotal: float
-    detailRating: list[int] = field(default_factory=list)
+    detailRating: list[float] = field(default_factory=list)
     review: str = ""
 
 
