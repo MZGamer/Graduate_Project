@@ -88,13 +88,16 @@ class googleAPI:
             print(placeData)
             if(len(placeData) == 0):
                 continue
-            
-            restaurantName = placeData[0]["name"]
-            placeID = placeData[0]["place_id"]
-            formatted_address = placeData[0]["formatted_address"]
-            location = placeData[0]["geometry"]["location"]
-            rating = placeData[0]["rating"]
-            userRatingTotal = placeData[0]["user_ratings_total"]
+            try:
+                restaurantName = placeData[0]["name"]
+                placeID = placeData[0]["place_id"]
+                formatted_address = placeData[0]["formatted_address"]
+                location = placeData[0]["geometry"]["location"]
+                rating = placeData[0]["rating"]
+                userRatingTotal = placeData[0]["user_ratings_total"]
+            except:
+                print("maybeNotRestaurant")
+                continue
 
             existRestaurantList.append(Restaurant(restaurantName, placeID, "", formatted_address, location, "", rating , userRatingTotal))
 

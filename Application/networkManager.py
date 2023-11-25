@@ -1,12 +1,10 @@
 import socket
 from package import *
 import json
-import queue
 
 class server:
     HOST : str
     PORT : int
-    sendingQueue : queue.Queue()
     conn : socket.socket
     temp : str
 
@@ -25,9 +23,13 @@ class server:
         self.conn, addr = s.accept()
         print('connected by ' + str(addr))            
         s.close()
+        return True
     
     def listenPackage(self):
         indata = self.conn.recv(1024)
+        if(len(indata) == 0):
+            print("connection closed")
+            return "close"
         receive = indata.decode()
         jsondata = None
         print('recv: ' + receive)
@@ -45,7 +47,8 @@ class server:
 
     def sendPackage(self, package):
         outdata = (json.dumps(package, default=Package.obj2Json).encode().decode('unicode-escape') + '#')
-        self.conn.send(outdata.encode())
+        #print(outdata)
+        self.conn.send(outdata.encode('utf-8', 'replace'))
 
 
     

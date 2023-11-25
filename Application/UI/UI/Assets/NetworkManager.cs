@@ -58,6 +58,7 @@ public class NetworkManager : MonoBehaviour
             clinetSocket.Connect(ipe);
             //clinetSocket.Blocking = false;
             connect = true;
+            UIManager.disconnect = false;
             StartCoroutine(listenSocket());
         } catch (System.Net.Sockets.SocketException sockEx) {
             Debug.Log(sockEx);
@@ -84,6 +85,7 @@ public class NetworkManager : MonoBehaviour
                         connect = false;
                         Debug.Log(" You lost connection with server");
                         Debug.Log("Disconnected");
+                        UIManager.disconnect = true;
                     } else {
                         
                         string json = Encoding.UTF8.GetString(result);
@@ -106,8 +108,7 @@ public class NetworkManager : MonoBehaviour
                             } else {
                                 Debug.LogWarning("Package Get" + temp);
                                 Debug.LogWarning(JsonUtility.FromJson<Package>(temp));
-                                
-                                //UI_Manager.animationQueue.Enqueue(JsonUtility.FromJson<Package>(temp));
+                                UIManager.pkgQueue.Enqueue(JsonUtility.FromJson<Package>(temp));
                                 temp = "";
                             }
                         }
@@ -152,6 +153,7 @@ public class NetworkManager : MonoBehaviour
 
     }
     private void Disconnected() {
+        UIManager.disconnect = true;
         if (connect) {
             try {
                 clinetSocket.Dispose();

@@ -50,13 +50,6 @@ class Package:
     def toJSON(self):
         return json.dumps(self, default=lambda o: o.__dict__, 
             sort_keys=True, indent=4)
- 
-    def __init__(self, ACTION = ACTION.RECEIVEDATA,restaurantData = []):
-        self.ACTION = ACTION
-        self.restaurantData = restaurantData
-        self.restaurantRequestName = ""
-        self.requestLocation = ""
-        self.requestTarget = ""
 
     def __init__(self, ACTION = ACTION.RECEIVEDATA,restaurantRequestName = "",requestLocation = "",requestTarget = "", restaurantData = []):
         self.ACTION = ACTION

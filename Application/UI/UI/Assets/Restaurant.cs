@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class Restaurant
 {
     public string name;
@@ -10,7 +11,7 @@ public class Restaurant
     public string address;
     public Dictionary<string, string> location;
     public string command;
-    public string GRating;
+    public float GRating;
     public int raitingTotal;
     public List<float> detailRating;
     public string review;

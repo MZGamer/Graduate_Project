@@ -12,7 +12,7 @@ import os
 def getReview(DBBuildingList, defTest = False):
 
     restaurant_list = DBBuildingList
-
+    finishedList = []
     driver = webdriver.Chrome()
     driver.set_window_size(850,750)
     Map_coordinates = dict({
@@ -45,7 +45,14 @@ def getReview(DBBuildingList, defTest = False):
             continue
         time.sleep(1)
         sortselect = driver.find_elements(By.XPATH, '//*[@class="fxNQSd"]')
-        sortselect[1].click()
+        try:
+            sortselect[1].click()
+        except:
+            if(defTest):
+                print("maybe not restaurant")
+                print(f"{i} : {restaurant.name}")
+            continue
+        
         time.sleep(1)
         scrollable_div = driver.find_element(By.XPATH, '//*[@class="m6QErb DxyBCb kA9KIf dS8AEf "]')
         for i in range(0,min(round(int(restaurant.raitingTotal) / 10),65)):#867/10 - 1
@@ -73,6 +80,8 @@ def getReview(DBBuildingList, defTest = False):
             else:
                 repeatcontentBuffer.append(content)
                 s = s + (date + "^" + content + "|")
-        
+        if (s == ""):
+            continue
         restaurant_list[index].review = s
-    return restaurant_list
+        finishedList.append(restaurant_list[index])
+    return finishedList

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using UnityEngine;
 
 public enum ACTION {
     NULL,
@@ -9,6 +10,8 @@ public enum ACTION {
     ASKGPT,
     REQUESTRESTAURANT
 }
+
+[System.Serializable]
 public class Package {
     public ACTION ACTION;
     public string restaurantRequestName;

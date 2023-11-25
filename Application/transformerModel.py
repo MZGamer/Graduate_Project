@@ -146,7 +146,7 @@ class transformerModel:
         if len(testCase) > maxlen:
             testCase = testCase[:maxlen]
 
-        print(len(testCase))
+        #print(len(testCase))
         for i in range(maxlen):
             if(i<len(testCase) and testCase[i] in dic):
                 encs.append(dic[testCase[i]])
@@ -199,7 +199,7 @@ class transformerModel:
 
         finalScore = [0.0,0.0,0.0,0.0,0.0]
         reviewTypeInd = 0
-        inp = input("checkPoint Enter anything to continue")
+        #inp = input("checkPoint Enter anything to continue")
         for sc in scoreToAnalyze:
             totalScore = 0
             count = 0

@@ -28,6 +28,14 @@ class restaurantListGenerator:
         self.server = server
 
 
+    def chkRepeat(self, restaurant_list):
+        placeID = []
+        noRepeatList = []
+        for r in restaurant_list:
+            if(r.placeID not in placeID):
+                noRepeatList.append(r)
+                placeID.append(r.placeID)
+        return noRepeatList
     def GPT_restaurant_list_Analyze(self, GPTResponse):
         print("-----------------Starting Analyze Restaurant List from GPT-----------------")
         raw_restaurant_list = GPTResponse.split('\n')
@@ -80,9 +88,10 @@ class restaurantListGenerator:
 
             randomRestaurantCount = len(restaurant_list)
         while(startPoint <= 10):
+            """
             inp = input("checkPoint Enter exit to stop ,other to continue")
             if(inp == "exit"):
-                break
+                break"""
             GPTResponse= (self.GPTCall.restaurantGenerate(userPoint, 1, restaurantNeeded, searchResult,startPoint, self.PEREXTRACT))
             #GPTResponse="1. 大雅牛排"
             
@@ -103,13 +112,18 @@ class restaurantListGenerator:
                 break
 
             startPoint += self.PEREXTRACT
+
+            restaurant_list = self.chkRepeat(restaurant_list)
+            DBBuildingList = self.chkRepeat(DBBuildingList)
             print("-----------------A TURN COMPLETE-----------------")
             print(f"Current len of List : {len(restaurant_list)}")
             if(self.defTest):
+                """
                 inp = input("Enter exit to stop ,other to continue")
 
                 if(inp == "exit"):
                     break
+                    """
 
         print("-----------------Result IN DB-----------------")
         for restaurant in restaurant_list:
@@ -119,12 +133,13 @@ class restaurantListGenerator:
         self.server.sendPackage(package)
 
         print("-----------------DB BUILDING-----------------")
-        DBBuildingList = getReview([DBBuildingList[0]])
+        DBBuildingList = getReview(DBBuildingList)
         for restaurant in DBBuildingList:
             forType, forReview, forFinal = self.model.textPreProcess(restaurant.review)
             restaurant.type = self.model.typePredict(forType)
             finalScore, reviewEachScore = self.model.reviewPredict(forReview)
             review = ""
+            """
             print(reviewEachScore)
             print(len(forFinal))
             print(len(reviewEachScore))
@@ -132,7 +147,7 @@ class restaurantListGenerator:
             print(len(reviewEachScore[1]))
             print(len(reviewEachScore[2]))
             print(len(reviewEachScore[3]))
-            print(len(reviewEachScore[4]))
+            print(len(reviewEachScore[4]))"""
             for i in range(len(forFinal)):
                 if(i != 0):
                     review += "|"

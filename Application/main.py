@@ -40,6 +40,7 @@ reviewVersion = "1123"
 #server
 HOST = '127.0.0.1'
 PORT = 2933
+isConnected = False
 
 def packageAnalyze(package):
     if package.ACTION == ACTION.ASKGPT:
@@ -48,7 +49,13 @@ def packageAnalyze(package):
         return self.requestRestaurant(package)
     else:
         return Package()"""
-
+    
+def scoreAnalyze( scoreString):
+    scoreString = scoreString.split(",")
+    score = []
+    for s in scoreString:
+        score.append(float(s))
+    return score
 
 GPTCall = GPTCall(OPENAIAPI, defTest)
 googleAPI = googleAPI(GOOGLECLOUDAPI, SEARCHENGINEID, TOOFARDIST, defTest)
@@ -56,11 +63,36 @@ DB = DB(file_path, defTest)
 model = transformerModel(modelPath, typeVersion, reviewVersion)
 server = server(HOST, PORT)
 restaurantListGenerator = restaurantListGenerator(googleAPI, GPTCall, DB, model, server, defTest)
-server.start()
 
+chkedRestaurant = []
+indexList = DB.DB.index[DB.DB["Name"] == "大雅牛排"].tolist()
+if len(indexList) != 0:
+    restaurantData = DB.DB.loc[indexList[0]]
+    if(defTest):
+        print(f"restaurant: 大雅牛排 in DB")
+    loc = restaurantData["location"].split(",")
+    location = {'lat': loc[0], 'lng': loc[1]}
+    chkedRestaurant.append(Restaurant(restaurantData["Name"], restaurantData["placeID"], restaurantData["type"], restaurantData["address"], location, restaurantData["command"], restaurantData["rating"], restaurantData["userRatingTotal"], scoreAnalyze(restaurantData["detailRating"]), restaurantData["Review"]))
+
+chkedRestaurant[0].review = chkedRestaurant[0].review.replace("\n", "\\")
+chkedRestaurant[0].review = chkedRestaurant[0].review.replace("\r", "\\")
+test = Package(ACTION.RECEIVEDATA, "", "", "", chkedRestaurant)
+
+
+
+isConnected = server.start()
+
+server.sendPackage(test)
 while True:
+    if(isConnected == False):
+        isConnected = server.start()
+        server.sendPackage(test)
+
+        continue
     pkg = server.listenPackage()
-    if pkg != None:
+    if pkg == "close":
+        isConnected = False
+    elif pkg != None:
         packageAnalyze(pkg)
 
 
