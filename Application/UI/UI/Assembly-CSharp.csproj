@@ -61,6 +61,8 @@
     <Compile Include="Assets\UIManager.cs" />
     <Compile Include="Assets\Restaurant.cs" />
     <Compile Include="Assets\restaurantInfo.cs" />
+    <Compile Include="Assets\HistoryDataUI.cs" />
+    <Compile Include="Assets\history.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

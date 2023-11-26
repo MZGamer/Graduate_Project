@@ -1,1 +1,1 @@
-while True:
+.replace("\n", "\\")

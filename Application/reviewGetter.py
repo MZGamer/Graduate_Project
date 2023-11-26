@@ -78,6 +78,7 @@ def getReview(DBBuildingList, defTest = False):
             if(content in repeatcontentBuffer):
                 continue
             else:
+                content = content.replace("^", " ")
                 repeatcontentBuffer.append(content)
                 s = s + (date + "^" + content + "|")
         if (s == ""):

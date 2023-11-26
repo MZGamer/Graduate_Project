@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Linq;
+using System;
 
 public class UIManager : MonoBehaviour
 {
@@ -11,15 +12,25 @@ public class UIManager : MonoBehaviour
     public static Queue<Package> pkgQueue;
     public List<Restaurant> restaurants;
     public int restaurantIndex;
+    public int historyIndex;
     public List<GameObject> restaurantItem;
     public GameObject restaurantTemplate;
+    public GameObject historyInfoTemplate;
+
+    public history tempHistory;
+    public List<GameObject> historyData;
+    public List<history> historys;
 
     public static bool disconnect;
+    public bool seeHistory;
+    public bool resetButton;
 
     [Header("Middle")]
     public GameObject restaurantInfoFolder;
     public GameObject restaurantDetail;
-    public GameObject searchFiled;
+    public GameObject historyFiled;
+    public GameObject askGPTFiled;
+    public GameObject requestRestaurantFiled;
 
     public static bool gMapScoreShow;
 
@@ -27,12 +38,16 @@ public class UIManager : MonoBehaviour
     public TMP_InputField LocationInput;
     public TMP_InputField TargetInput;
 
+    [Header("restaurantRequest")]
+    public TMP_InputField restaurantInput;
+
     [Header("Top")]
     public TMP_Dropdown scoreDisplay;
     public TMP_Dropdown scoreSortBy;
 
     public GameObject listTop;
     public GameObject detailTop;
+    public GameObject historyTop;
 
     [Header("Left")]
     public Button askGPTButton;
@@ -66,9 +81,11 @@ public class UIManager : MonoBehaviour
         //NetworkManager.sendingQueue.Enqueue(test);
         gMapScoreShow = false;
         restaurantIndex = 0;
+        historyIndex = 0;
         pkgQueue = new Queue<Package>();
 
         restaurants = new List<Restaurant>();
+        historys = new List<history>();
         Restaurant testr = new Restaurant();
 
 
@@ -98,14 +115,23 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        packageAnalyze();
         if (disconnect) {
             disconnectIcon.SetActive(true);
             reConnectedButton.interactable = true;
             searchingIcon.SetActive(false);
+            askGPTButton.interactable = false;
+            requestRestaurantButton.interactable = false;
+            resetButton = false;
         } else {
             disconnectIcon.SetActive(false);
             reConnectedButton.interactable=false;
+            if (!resetButton) {
+                askGPTButton.interactable = true;
+                requestRestaurantButton.interactable = true;
+                resetButton = true;
+            }
+
+            packageAnalyze();
         }
     }
 
@@ -129,33 +155,74 @@ public class UIManager : MonoBehaviour
                     askGPTButton.interactable = true;
                     requestRestaurantButton.interactable = true;
                     searchingIcon.SetActive(false);
+                    seeHistory = false;
                     UIUpdate();
+                    if (tempHistory != null) {
+                        tempHistory.restaurants = restaurants;
+                        historys.Add(tempHistory);
+                    }
+
                 }
                 break;
         }
     }
 
     void UIUpdate() {
-        foreach (GameObject obj in restaurantItem) {
-            Destroy(obj);
+        if (!seeHistory) {
+            historyTop.SetActive(false);
+            listTop.SetActive(true);
+            historyFiled.SetActive(false);
+            restaurantInfoFolder.SetActive(true);
+            foreach (GameObject obj in restaurantItem) {
+                Destroy(obj);
+            }
+            restaurantItem.Clear();
+            for (int i = restaurantIndex; i < Mathf.Min(restaurantIndex + 4, restaurants.Count); i++) {
+                int index = i;
+                GameObject temp = Instantiate(restaurantTemplate, restaurantInfoFolder.transform);
+                restaurantInfo info = temp.GetComponent<restaurantInfo>();
+                info.setData(restaurants[i]);
+                Button but = temp.GetComponent<Button>();
+                but.onClick.AddListener(() =>  seeDetail(index));
+                restaurantItem.Add(temp);
+            }
+        } else {
+            historyTop.SetActive(true);
+            listTop.SetActive(false);
+            historyFiled.SetActive(true);
+            restaurantInfoFolder.SetActive(false);
+            foreach (GameObject obj in historyData) {
+                Destroy(obj);
+            }
+            historyData.Clear();
+            for (int i = historyIndex; i < Mathf.Min(historyIndex + 4, historys.Count); i++) {
+                int index = i;
+                GameObject temp = Instantiate(historyInfoTemplate, historyFiled.transform);
+                HistoryDataUI data = temp.GetComponent<HistoryDataUI>();
+                data.setData(historys[i]);
+                Button but = temp.GetComponent<Button>();
+                but.onClick.AddListener(() => switchHistory(index));
+                historyData.Add(temp);
+            }
         }
-        restaurantItem.Clear();
-        for (int i = restaurantIndex; i < Mathf.Min(restaurantIndex + 4, restaurants.Count); i++) {
-            int index = i;
-            GameObject temp = Instantiate(restaurantTemplate, restaurantInfoFolder.transform);
-            restaurantInfo info = temp.GetComponent<restaurantInfo>();
-            info.setData(restaurants[i]);
-            Button but = temp.GetComponent<Button>();
-            but.onClick.AddListener(() =>  seeDetail(index));
-            restaurantItem.Add(temp);
-        }
+
     }
 
-   
 
+    public void switchHistory(int index) {
+        restaurants = historys[index].restaurants;
+        seeHistory = false;
+        UIUpdate();
+    }
+
+    public void seeHistoryList() {
+        backToList();
+        seeHistory = true;
+        UIUpdate();
+    }
     
 
-    public void send() {
+    public void askGPTsend() {
         string loc = LocationInput.text;
         string target = TargetInput.text;
         if (loc == "") {
@@ -169,17 +236,43 @@ public class UIManager : MonoBehaviour
         Package package = new Package(ACTION.ASKGPT, loc, target);
         NetworkManager.sendingQueue.Enqueue(package);
         searchingIcon.SetActive(true);
-        
+        tempHistory = new history(null, 0, loc + " " + target, DateTime.Now);
+   
+
         closeSearch();
 
     }
 
+    public void requestRstaurantSend() {
+        string target = restaurantInput.text;
+        if (target == "") {
+            return;
+        }
+        askGPTButton.interactable = false;
+        requestRestaurantButton.interactable = false;
+        Package package = new Package(ACTION.REQUESTRESTAURANT, target);
+        NetworkManager.sendingQueue.Enqueue(package);
+        searchingIcon.SetActive(true);
+        tempHistory = new history(null, 1, target, DateTime.Now);
+
+        closeSearch();
+    }
+
     public void askGPT() {
-        searchFiled.SetActive(true);
+        closeSearch();
+        askGPTFiled.SetActive(true);
         
     }
+
+    public void restaurantResuest() {
+        closeSearch();
+        requestRestaurantFiled.SetActive(true);
+    }
+
     public void closeSearch() {
-        searchFiled.SetActive(false);
+        askGPTFiled.SetActive(false);
+        requestRestaurantFiled.SetActive(false);
+
     }
 
     public void changeScoreDisplay() {
@@ -201,18 +294,34 @@ public class UIManager : MonoBehaviour
     }
 
     public void LastPage() {
-        if(restaurantIndex - 4 >= 0) {
-            restaurantIndex -= 4;
-            UIUpdate();
+        if (seeHistory) {
+            if (historyIndex - 4 >= 0) {
+                historyIndex -= 4;
+                UIUpdate();
+            }
+        } else {
+            if (restaurantIndex - 4 >= 0) {
+                restaurantIndex -= 4;
+                UIUpdate();
+            }
         }
+
 
     }
 
     public void nextPage() {
-        if(restaurantIndex + 4 < restaurants.Count) {
-            restaurantIndex += 4;
-            UIUpdate();
+        if (seeHistory) {
+            if (historyIndex + 4 < historys.Count) {
+                historyIndex += 4;
+                UIUpdate();
+            }
+        } else {
+            if (restaurantIndex + 4 < restaurants.Count) {
+                restaurantIndex += 4;
+                UIUpdate();
+            }
         }
+
     }
 
     public void backToList() {
@@ -235,8 +344,8 @@ public class UIManager : MonoBehaviour
         environmentScoreText.text = r.detailRating[2].ToString();
         priceScoreText.text = r.detailRating[3].ToString();
         food_qulityScoreText.text = r.detailRating[4].ToString();
-        comment.text = r.review; // 暫時替代，記得改回comment
-        comment.text = comment.text.Replace("\\", "\n");
+        comment.text = r.command; // 暫時替代，記得改回comment
+        comment.text = comment.text.Replace("/n", "\n");
 
 
         detailTop.SetActive(true);

@@ -17,6 +17,7 @@ from transformerModel import transformerModel
 from networkManager import server
 from package import *
 import json
+import threading
 #Test Panel
 defTest = True
 
@@ -44,10 +45,10 @@ isConnected = False
 
 def packageAnalyze(package):
     if package.ACTION == ACTION.ASKGPT:
-        restaurantListGenerator.task(package.requestLocation, package.requestTarget, 10, 10)
-    """elif package.ACTION == ACTION.REQUESTRESTAURANT:
-        return self.requestRestaurant(package)
-    else:
+        threading.Thread(target=restaurantListGenerator.task, args=([package.requestLocation, package.requestTarget, 10, 10])).start()
+    elif package.ACTION == ACTION.REQUESTRESTAURANT:
+        restaurantListGenerator.restaurantRequest(package.restaurantRequestName)
+    """else:
         return Package()"""
     
 def scoreAnalyze( scoreString):
@@ -69,7 +70,7 @@ indexList = DB.DB.index[DB.DB["Name"] == "大雅牛排"].tolist()
 if len(indexList) != 0:
     restaurantData = DB.DB.loc[indexList[0]]
     if(defTest):
-        print(f"restaurant: 大雅牛排 in DB")
+        print(f"restaurant: 八谷 豬排 咖哩 民族店 in DB")
     loc = restaurantData["location"].split(",")
     location = {'lat': loc[0], 'lng': loc[1]}
     chkedRestaurant.append(Restaurant(restaurantData["Name"], restaurantData["placeID"], restaurantData["type"], restaurantData["address"], location, restaurantData["command"], restaurantData["rating"], restaurantData["userRatingTotal"], scoreAnalyze(restaurantData["detailRating"]), restaurantData["Review"]))

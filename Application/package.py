@@ -3,7 +3,6 @@ from enum import IntEnum
 from dataclasses import dataclass
 from dataclasses import field
 
-import numpy as np
 from restaurant import Restaurant
 import json
 
@@ -22,8 +21,16 @@ class Package:
     restaurantData : list[Restaurant] = []
     
     def obj2Json(package):
-        print(package)
         if (type(package) == Restaurant):
+            if type(package.command) != str:
+                package.command = ""
+            else:
+                package.command = package.command.replace("\n", "/n").replace("\r", "/n")
+
+            if type(package.review) != str:
+                package.review = ""
+            else:
+                package.review = package.review.replace("\n", "/n").replace("\r", "/n")
             return {
                 "name" : package.name,
                 "placeID" : package.placeID,
@@ -34,7 +41,7 @@ class Package:
                 "GRating" : package.GRating,
                 "raitingTotal" : package.raitingTotal,
                 "detailRating" : package.detailRating,
-                "review" : package.review
+                "review" : package.review.replace("\n", "\\").replace("\r", "\\")
             }
         elif (type(package) == Package):
             return {

@@ -7,6 +7,8 @@ from reviewGetter import getReview
 from transformerModel import transformerModel
 from networkManager import server
 from package import *
+from reviewSelect import *
+import copy
 @dataclass
 class restaurantListGenerator:
     googleAPI: googleAPI
@@ -36,6 +38,7 @@ class restaurantListGenerator:
                 noRepeatList.append(r)
                 placeID.append(r.placeID)
         return noRepeatList
+    
     def GPT_restaurant_list_Analyze(self, GPTResponse):
         print("-----------------Starting Analyze Restaurant List from GPT-----------------")
         raw_restaurant_list = GPTResponse.split('\n')
@@ -65,6 +68,42 @@ class restaurantListGenerator:
         nameChkedRestaurantList = self.googleAPI.restaurantNameCheck(restaurant_name_list)
         return nameChkedRestaurantList
     
+    def restaurantRequest(self, restaurantName):
+        nameChkedRestaurantList = self.googleAPI.restaurantNameCheck([restaurantName])
+        existRestaurant_list, needChkRestaurantList = self.DB.searchDB(nameChkedRestaurantList)
+        if (len(existRestaurant_list) != 0):
+            package = Package(ACTION.RECEIVEDATA, "", "", "", existRestaurant_list)
+            self.server.sendPackage(package)
+            return
+        else:
+            print("-----------------DB BUILDING-----------------")
+            needChkRestaurantList = self.googleAPI.chkRestaurantInfo("",needChkRestaurantList)
+            DBBuildingList = getReview(needChkRestaurantList)
+            for restaurant in DBBuildingList:
+                forType, forReview, forFinal = self.model.textPreProcess(restaurant.review)
+                restaurant.type = self.model.typePredict(forType)
+                finalScore, reviewEachScore = self.model.reviewPredict(forReview)
+                review = ""
+                for i in range(len(forFinal)):
+                    if(i != 0):
+                        review += "|"
+                    review += f"{reviewEachScore[0][i]},{reviewEachScore[1][i]},{reviewEachScore[2][i]},{reviewEachScore[3][i]},{reviewEachScore[4][i]}^{forFinal[i]}"
+                restaurant.review = review
+                restaurant.detailRating = finalScore
+
+                reviewListWithScore = reviewPreprocess(restaurant)
+                pendingList = reviewClassify(reviewListWithScore)
+                reviewPicked = reviewPick(pendingList)
+                r = self.GPTCall.sendGPTRequest("", 2, 0, [], 0, 0, restaurant, reviewPicked)
+                restaurant.command = r.replace("*", "")
+            restaurantSend = copy.deepcopy(DBBuildingList)
+            package = Package(ACTION.RECEIVEDATA, "", "", "", restaurantSend)
+            self.server.sendPackage(package)            
+            self.DB.DBAddRestaurant(DBBuildingList)
+            print("-----------------Tack Complete-----------------")
+
+
+
 
     def task(self, userPoint, target, restaurantNeeded, randomNeeded = 0):
         startPoint = 0
@@ -76,7 +115,7 @@ class restaurantListGenerator:
 
         #Random Restaurant
         if (target == "美食"):
-            GPTResponse=(self.GPTCall.restaurantGenerate(userPoint, 0, randomNeeded))
+            GPTResponse=(self.GPTCall.sendGPTRequest(userPoint, 0, randomNeeded))
             nameChkedRestaurantList = self.GPT_restaurant_list_Analyze(GPTResponse)
             
             existRestaurant_list, needChkRestaurantList = self.DB.searchDB(nameChkedRestaurantList)
@@ -92,7 +131,7 @@ class restaurantListGenerator:
             inp = input("checkPoint Enter exit to stop ,other to continue")
             if(inp == "exit"):
                 break"""
-            GPTResponse= (self.GPTCall.restaurantGenerate(userPoint, 1, restaurantNeeded, searchResult,startPoint, self.PEREXTRACT))
+            GPTResponse= (self.GPTCall.sendGPTRequest(userPoint, 1, restaurantNeeded, searchResult,startPoint, self.PEREXTRACT))
             #GPTResponse="1. 大雅牛排"
             
 
@@ -154,7 +193,15 @@ class restaurantListGenerator:
                 review += f"{reviewEachScore[0][i]},{reviewEachScore[1][i]},{reviewEachScore[2][i]},{reviewEachScore[3][i]},{reviewEachScore[4][i]}^{forFinal[i]}"
             restaurant.review = review
             restaurant.detailRating = finalScore
-            
+            reviewListWithScore = reviewPreprocess(restaurant)
+            pendingList = reviewClassify(reviewListWithScore)
+            reviewPicked = reviewPick(pendingList)
+            r = self.GPTCall.sendGPTRequest("", 2, 0, [], 0, 0, restaurant, reviewPicked)
+            restaurant.command = r.replace("*", "")
+        
+        restaurantSend = copy.deepcopy(DBBuildingList)
+        package = Package(ACTION.RECEIVEDATA, "", "", "", restaurantSend)
+        self.server.sendPackage(package)            
         self.DB.DBAddRestaurant(DBBuildingList)
         print("-----------------Tack Complete-----------------")
 

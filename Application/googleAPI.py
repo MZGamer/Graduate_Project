@@ -53,7 +53,7 @@ class googleAPI:
             loc = "&locationbias=circle:10000@23.4800751,120.4491113"
             key = "&key=" + self.GOOGLECLOUDAPI
             requestsURL = gapi + query +inputtype + loc + detail + key + fields
-
+            #print(requestsURL)
             # 使用 GET 方式下載普通網頁
             r = requests.get(requestsURL)
             if(self.defTest):
@@ -62,6 +62,7 @@ class googleAPI:
             out = json.loads(r.text)
             if (out['status'] == 'ZERO_RESULTS'):
                 continue
+            #print(out)
             realName = out['candidates'][0]['name']
             if(realName not in nameChkedRestaurantList):
                 nameChkedRestaurantList.append(realName)

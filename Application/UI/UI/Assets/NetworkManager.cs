@@ -21,6 +21,10 @@ public class NetworkManager : MonoBehaviour
     bool connect = false;
     string temp = "";
 
+    int chkIndex = 0;
+    string chktemp = "";
+    string chkStr = "ENDCOMMUNICATION";
+
     // Start is called before the first frame update
     void Start()
     {
@@ -59,6 +63,10 @@ public class NetworkManager : MonoBehaviour
             //clinetSocket.Blocking = false;
             connect = true;
             UIManager.disconnect = false;
+            temp = "";
+            chkIndex = 0;
+            chktemp = "";
+
             StartCoroutine(listenSocket());
         } catch (System.Net.Sockets.SocketException sockEx) {
             Debug.Log(sockEx);
@@ -98,18 +106,27 @@ public class NetworkManager : MonoBehaviour
                                 Debug.LogWarning("JunkPackage");
                                 break;
                             }
-                            if (json[i] != '#') {
-                                temp += json[i];
+                            if (json[i] == chkStr[chkIndex]) {
+                                chkIndex++;
+                                chktemp += json[i];
+                            } else {
+                                chkIndex = 0;
+                                temp = temp + chktemp + json[i];
+                                chktemp = "";
+
                                 /*if (temp.Length == 7 && temp != "{\"src\":") {
                                     temp = "";
                                     Debug.LogWarning("JunkPackage");
                                     break;
                                 }*/
-                            } else {
+                            }
+                            if (chkIndex == chkStr.Length){
                                 Debug.LogWarning("Package Get" + temp);
                                 Debug.LogWarning(JsonUtility.FromJson<Package>(temp));
                                 UIManager.pkgQueue.Enqueue(JsonUtility.FromJson<Package>(temp));
                                 temp = "";
+                                chkIndex = 0;
+                                chktemp = "";
                             }
                         }
                     }
@@ -118,6 +135,7 @@ public class NetworkManager : MonoBehaviour
             } catch (System.Net.Sockets.SocketException sockEx) {
                 Debug.Log(sockEx);
                 Disconnected();
+                break;
             }
             yield return new WaitForSeconds(0.1f);
         }
@@ -131,7 +149,7 @@ public class NetworkManager : MonoBehaviour
         while(sendingQueue.Count != 0) {
             try {
                 Package pkg = sendingQueue.Dequeue();
-                string json = JsonUtility.ToJson(pkg) + '#';
+                string json = JsonUtility.ToJson(pkg) + chkStr;
                 clinetSocket.Send(Encoding.UTF8.GetBytes(json));
                 Debug.Log("pkg Send");
             } catch (System.Net.Sockets.SocketException sockEx) {

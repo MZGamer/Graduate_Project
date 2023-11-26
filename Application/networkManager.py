@@ -7,11 +7,17 @@ class server:
     PORT : int
     conn : socket.socket
     temp : str
+    chkStr : str
+    chkStrIndex : int
+    chktemp : str
 
     def __init__(self, HOST, PORT):
         self.HOST = HOST
         self.PORT = PORT
         self.temp = ""
+        self.chktemp = ""
+        self.chkStr = "ENDCOMMUNICATION"
+        self.chkStrIndex = 0
 
 
     def start(self):
@@ -23,6 +29,7 @@ class server:
         self.conn, addr = s.accept()
         print('connected by ' + str(addr))            
         s.close()
+        pkgChk = 0
         return True
     
     def listenPackage(self):
@@ -34,9 +41,18 @@ class server:
         jsondata = None
         print('recv: ' + receive)
         for t in receive:
-            if t != '#':
-                self.temp = self.temp + t
+            if t == self.chkStr[self.chkStrIndex]:
+                self.chkStrIndex += 1
+                self.chktemp += t
             else:
+                self.temp = self.temp + self.chktemp + t
+                self.chktemp = ""
+                self.chkStrIndex = 0
+
+            if self.chkStrIndex == len(self.chkStr):
+                self.chkStrIndex = 0
+                self.chktemp = ""
+
                 jsondata = json.loads(self.temp)
                 self.temp = ""
                 package = Package(jsondata["ACTION"],jsondata["restaurantRequestName"],jsondata["requestLocation"],jsondata["requestTarget"])
@@ -46,8 +62,10 @@ class server:
         #self.conn.close()
 
     def sendPackage(self, package):
-        outdata = (json.dumps(package, default=Package.obj2Json).encode().decode('unicode-escape') + '#')
-        #print(outdata)
+        for restaurant in package.restaurantData:
+            restaurant.review = ""
+        outdata = (json.dumps(package, default=Package.obj2Json).encode().decode('unicode-escape') + 'ENDCOMMUNICATION')
+        print(outdata)
         self.conn.send(outdata.encode('utf-8', 'replace'))
 
 
