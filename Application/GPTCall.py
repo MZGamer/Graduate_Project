@@ -39,33 +39,39 @@ class GPTCall:
             return sendMessage
         elif  mode == 1:
             sendMessage =[
-                {"role": "system", "content": "你是一個美食評論公司的助理，你的任務是根據網路上的資料，來判斷其中有哪些店家要交給美食評論家去光顧，回答的規則如下"},
-                {"role": "user", "content": "1. 所有的餐廳名稱須依順序加上編號，範例: 1. 餐廳名稱\n 2. 餐廳名稱"},
-                {"role": "user", "content": "2. 所列出的餐廳名稱必須出現在交給您的網路搜尋的結果裡"},
-                {"role": "user", "content": f"3. 餐廳的數量上限為{min(10,needed)}間 "},
-                {"role": "user", "content": f"4. 請提供{needed}間餐廳 "},
-                {"role": "user", "content": "5. 除非提供的資料內有規則1列出的餐廳，才可列入清單"},
-                {"role": "user", "content": "以下為範例，包含3個搜尋結果跟回答"},
-                {"role": "user", "content": "1. 說到道地的美食就不得不提到阿財羊肉爐......"},
-                {"role": "user", "content": "2. 道地美食No.1 好喝豆漿 No.2 洪記牛肉麵....."},
-                {"role": "user", "content": "3. 聽說凱霞牛肉湯十分有名......"},
-                {"role": "user", "content": "Ans:"},
-                {"role": "user", "content": "1. 阿財羊肉爐"},
-                {"role": "user", "content": "2. 好喝豆漿"},
-                {"role": "user", "content": "3. 洪記牛肉麵"},
-                {"role": "user", "content": "4. 凱霞牛肉湯"},
-                {"role": "user", "content": "以下為另一個範例，包含3個搜尋結果跟回答"},
-                {"role": "user", "content": "1. 咖哩的食材包括胡蘿蔔......"},
-                {"role": "user", "content": "2. 烤箱先加熱10分鐘....."},
-                {"role": "user", "content": "3. 食材推薦去全聯買......"},
-                {"role": "user", "content": "Ans:"},
+                {"role": "system", "content": "你是一個美食評論公司的助理，你的任務是根據網路上的資料，來判斷其中有哪些店家要交給美食評論家去光顧，回答的規則如下\n "},
+                {"role": "user", "content": "1. 所有的餐廳名稱須依順序加上編號，範例: 1. 餐廳名稱\n 2. 餐廳名稱\n "},
+                {"role": "user", "content": "2. 所列出的餐廳名稱必須出現在交給您的網路搜尋的結果裡\n "},
+                {"role": "user", "content": f"3. 餐廳的數量上限為{min(10,needed)}間 \n "},
+                {"role": "user", "content": f"4. 請提供{needed}間餐廳 \n "},
+                {"role": "user", "content": "5. 除非提供的資料內有規則1列出的餐廳，才可列入清單\n "},
+                {"role": "user", "content": "以下為範例，包含3個搜尋結果跟回答\n "},
+                {"role": "user", "content": "1. 說到道地的美食就不得不提到阿財羊肉爐......\n "},
+                {"role": "user", "content": "2. 道地美食No.1 好喝豆漿 No.2 洪記牛肉麵.....\n "},
+                {"role": "user", "content": "3. 聽說凱霞牛肉湯十分有名......\n "},
+                {"role": "user", "content": "Ans:\n "},
+                {"role": "user", "content": "1. 阿財羊肉爐\n "},
+                {"role": "user", "content": "2. 好喝豆漿\n "},
+                {"role": "user", "content": "3. 洪記牛肉麵\n "},
+                {"role": "user", "content": "4. 凱霞牛肉湯\n "},
+                {"role": "user", "content": "以下為另一個範例，包含3個搜尋結果跟回答\n "},
+                {"role": "user", "content": "1. 咖哩的食材包括胡蘿蔔......\n "},
+                {"role": "user", "content": "2. 烤箱先加熱10分鐘.....\n "},
+                {"role": "user", "content": "3. 食材推薦去全聯買......\n "},
+                {"role": "user", "content": "Ans:\n "},
+                {"role": "user", "content": "搜尋結果裡沒有包含任何餐廳\n "},
+                {"role": "user", "content": "以下為第三個範例，包含3個搜尋結果跟回答\n "},
+                {"role": "user", "content": "1. 牛肉湯使用日本和牛......\n "},
+                {"role": "user", "content": "2. 最好吃的壽司要用生魚.....\n "},
+                {"role": "user", "content": "3. 愛河菜市場的魚最新鮮......\n "},
+                {"role": "user", "content": "Ans\n :"},
                 {"role": "user", "content": "搜尋結果裡沒有包含任何餐廳"},
-                {"role": "user", "content": f"\n 接下來我會給你{perExtract}份搜尋結果"},
-                {"role": "user", "content": f"請依照接下來提供的結果依據規則提取出餐廳名單"},
-                {"role": "user", "content": f"搜尋結果:"}
+                {"role": "user", "content": f"\n 接下來我會給你{perExtract}份搜尋結果\n "},
+                {"role": "user", "content": f"請依照接下來提供的結果依據規則提取出餐廳名單\n "},
+                {"role": "user", "content": f"搜尋結果:\n "}
             ]
             for i in range(startPoint,min(startPoint+perExtract,len(searchResult))) :
-                sendMessage.append({"role": "user", "content": f"{i+1}. " + searchResult[i]})
+                sendMessage.append({"role": "user", "content": f"{i+1}. {searchResult[i]}\n "})
 
             return sendMessage
         else:
@@ -112,6 +118,7 @@ class GPTCall:
             )
         except openai.error.RateLimitError:
             sleep(5)
+            print("RateLimitWaiting")
             r = self.sendGPTRequest(place, mode, needed, searchResult, startPoint, perExtract, restaurant, reviewList)
             return r
 

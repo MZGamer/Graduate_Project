@@ -37,6 +37,8 @@ public class UIManager : MonoBehaviour
     [Header("GPTSearch")]
     public TMP_InputField LocationInput;
     public TMP_InputField TargetInput;
+    public TMP_InputField restaurantNeedInput;
+    public TMP_InputField randomNeedInput;
 
     [Header("restaurantRequest")]
     public TMP_InputField restaurantInput;
@@ -77,7 +79,6 @@ public class UIManager : MonoBehaviour
         NetworkManager.ip = "127.0.0.1";
         NetworkManager.port = 2933;
         NetworkManager.connectSettingComplete = true;
-        Package test = new Package(ACTION.ASKGPT, "嘉義", "美食");
         //NetworkManager.sendingQueue.Enqueue(test);
         gMapScoreShow = false;
         restaurantIndex = 0;
@@ -225,15 +226,39 @@ public class UIManager : MonoBehaviour
     public void askGPTsend() {
         string loc = LocationInput.text;
         string target = TargetInput.text;
+        int restaurantNeed = 0;
+        int randomNeed = 0;
         if (loc == "") {
             loc = "嘉義市";
         }
         if (target == "") {
             target = "美食";
         }
+
+        if(restaurantNeedInput.text == "") {
+            restaurantNeed = 0;
+        } else {
+            try {
+                restaurantNeed = Convert.ToInt32(restaurantNeedInput.text);
+            } catch {
+                Debug.Log("restaurantNeed input error");
+                return;
+            }
+        }
+
+        if (randomNeedInput.text == "") {
+            randomNeed = 0;
+        } else {
+            try {
+                randomNeed = Convert.ToInt32(randomNeedInput.text);
+            } catch {
+                Debug.Log("randomNeed input error");
+                return;
+            }
+        }
         askGPTButton.interactable = false;
         requestRestaurantButton.interactable = false;
-        Package package = new Package(ACTION.ASKGPT, loc, target);
+        Package package = new Package(ACTION.ASKGPT, loc, target, restaurantNeed, randomNeed);
         NetworkManager.sendingQueue.Enqueue(package);
         searchingIcon.SetActive(true);
         tempHistory = new history(null, 0, loc + " " + target, DateTime.Now);

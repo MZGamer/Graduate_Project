@@ -18,26 +18,32 @@ class googleAPI:
         self.TOOFARDIST = TOOFARDIST
         self.defTest = defTest
 
-    def googleSearch(self, question):
+    def googleSearch(self, question, need):
         print("-----------------Searching Data with googleSearch-----------------")
         googleAPIkey = "key=" + self.GOOGLECLOUDAPI
         searchEngineID = "&cx=" + self.SEARCHENGINEID
         query = "&q=" + question
-        searchAPI = "https://www.googleapis.com/customsearch/v1?" 
+        searchAPI = "https://www.googleapis.com/customsearch/v1?"
+        
+        result = []
+        for i in range(int(need / 10)):
+            start = f"&start={i*10+1}" 
+            reauestURL = searchAPI + googleAPIkey + searchEngineID + query + start
+            r = requests.get(reauestURL)
+            result.append(r)
+            if(self.defTest):
+                print(f"return status : {r}")
 
-        reauestURL = searchAPI + googleAPIkey + searchEngineID + query
-        r = requests.get(reauestURL)
-        if(self.defTest):
-            print(f"return status : {r}")
-        return r
+        return result
     
     def searchResultExtract(self, r, defTest = False):
         searchResult = []
-        out = json.loads(r.text)
-        for i in out["items"]:
-            if(self.defTest):
-                print(i["snippet"])
-            searchResult.append(i["snippet"])
+        for result in r:
+            out = json.loads(result.text)
+            for i in out["items"]:
+                if(self.defTest):
+                    print(i["snippet"])
+                searchResult.append(i["snippet"])
         if(self.defTest):
             print(f"Result len : {len(searchResult)}")
         return searchResult

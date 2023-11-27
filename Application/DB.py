@@ -1,3 +1,4 @@
+import random
 from restaurant import Restaurant
 
 from dataclasses import dataclass
@@ -35,6 +36,59 @@ class DB:
 
         return chkedRestaurant, needChkRestaurant
     
+
+    def randomSelect(self, restaurant_list, needed):
+        print("-----------------Random Select-----------------")
+        predToType = {0: '飲料',1: '甜點',2: '港式',3: '韓式',4: '歐美',5: '素食',6: '東南亞',7: '中式',8: '健康餐',9: '台式',10: '日式',11: '小吃'}
+        inv_label_dict = {v: k for k, v in predToType.items()}
+        currentList = [0,0,0,0,0,0,0,0,0,0,0,0]
+        if(len(restaurant_list) >= needed):
+            return restaurant_list
+        
+        for r in restaurant_list:
+            if(type(r.type) != str):
+                continue
+            print(r.type)
+            print(inv_label_dict[r.type])
+            print()
+            currentList[inv_label_dict[r.type]] += 1
+
+        while(len(restaurant_list) < needed or sum(currentList) < needed):
+            print(sum(currentList))
+            print(needed)
+            for i in range(len(currentList)):
+                if(currentList[i] > min(currentList)):
+                    continue
+                fliter1 = (self.DB["type"] == predToType[i])
+                fliter2 = (self.DB["rating"] > 4)
+                res = self.DB[fliter1 & fliter2].index
+                if(len(res) == 0):
+                    currentList[i]+= 1
+                    continue
+                else:
+                    success = False
+                    for retryCounter in range(3):
+                        select = random.randint(0, len(res)-1)
+                        restaurantData = self.DB.loc[res[select]]
+                        loc = restaurantData["location"].split(",")
+                        location = {'lat': loc[0], 'lng': loc[1]}
+                        selectRestaurant = (Restaurant(restaurantData["Name"], restaurantData["placeID"], restaurantData["type"], restaurantData["address"], location, restaurantData["command"], restaurantData["rating"], restaurantData["userRatingTotal"], self.scoreAnalyze(restaurantData["detailRating"])))
+                        if (selectRestaurant in restaurant_list):
+                            continue
+                        else:
+                            restaurant_list.append(selectRestaurant)
+                            currentList[i]+= 1
+                            success = True
+                            print(f"choose: {restaurantData['Name']}")
+                            break
+                    if(success == False):
+                        currentList[i]+= 1
+        return restaurant_list
+
+
+
+
+
     def scoreAnalyze(self, scoreString):
         scoreString = scoreString.split(",")
         score = []

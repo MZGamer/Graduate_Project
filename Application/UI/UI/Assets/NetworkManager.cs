@@ -51,6 +51,7 @@ public class NetworkManager : MonoBehaviour
         try {
             IPAddress ipAddress = IPAddress.Parse(ip);
             ipe = new IPEndPoint(ipAddress, port);
+            gateway = new List<Socket>();
         } catch {
             return;
         }
@@ -176,8 +177,8 @@ public class NetworkManager : MonoBehaviour
             try {
                 clinetSocket.Dispose();
             } catch {
-
             }
+            connect = false;
             Debug.Log("Disconnected");
         }
     }

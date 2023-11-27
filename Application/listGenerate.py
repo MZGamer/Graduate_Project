@@ -110,7 +110,7 @@ class restaurantListGenerator:
         randomRestaurantCount = 0
         restaurant_list = []
         DBBuildingList = []
-        r = self.googleAPI.googleSearch(question= userPoint + target)
+        r = self.googleAPI.googleSearch(question= userPoint + target, need = max(restaurantNeeded, 10))
         searchResult = self.googleAPI.searchResultExtract(r)
 
         #Random Restaurant
@@ -126,13 +126,12 @@ class restaurantListGenerator:
             DBBuildingList.extend(chkedRestaurantList)
 
             randomRestaurantCount = len(restaurant_list)
-        while(startPoint <= 10):
+        while(startPoint < len(searchResult)):
             """
             inp = input("checkPoint Enter exit to stop ,other to continue")
             if(inp == "exit"):
                 break"""
             GPTResponse= (self.GPTCall.sendGPTRequest(userPoint, 1, restaurantNeeded, searchResult,startPoint, self.PEREXTRACT))
-            #GPTResponse="1. 大雅牛排"
             
 
 
@@ -163,7 +162,8 @@ class restaurantListGenerator:
                 if(inp == "exit"):
                     break
                     """
-
+        if(target == "美食"):
+            restaurant_list = self.DB.randomSelect(restaurant_list, restaurantNeeded + randomNeeded)
         print("-----------------Result IN DB-----------------")
         for restaurant in restaurant_list:
             restaurant.print()

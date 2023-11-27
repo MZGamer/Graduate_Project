@@ -19,6 +19,8 @@ class Package:
     requestLocation : str = ""
     requestTarget : str = ""
     restaurantData : list[Restaurant] = []
+    restaurantNeed : int
+    randomNeed : int
     
     def obj2Json(package):
         if (type(package) == Restaurant):
@@ -49,7 +51,9 @@ class Package:
                 "restaurantRequestName" : package.restaurantRequestName,
                 "requestLocation" : package.requestLocation,
                 "requestTarget" : package.requestTarget,
-                "restaurantData" : package.restaurantData
+                "restaurantData" : package.restaurantData,
+                "restaurantNeed" : package.restaurantNeed,
+                "randomNeed" : package.randomNeed
             }
         else:
             pass
@@ -58,10 +62,12 @@ class Package:
         return json.dumps(self, default=lambda o: o.__dict__, 
             sort_keys=True, indent=4)
 
-    def __init__(self, ACTION = ACTION.RECEIVEDATA,restaurantRequestName = "",requestLocation = "",requestTarget = "", restaurantData = []):
+    def __init__(self, ACTION = ACTION.RECEIVEDATA,restaurantRequestName = "",requestLocation = "",requestTarget = "", restaurantData = [], restaurantNeed = 0, randomNeed = 0):
         self.ACTION = ACTION
         self.restaurantData = restaurantData
         self.restaurantRequestName = restaurantRequestName
         self.requestLocation = requestLocation
         self.requestTarget = requestTarget
+        self.restaurantNeed = restaurantNeed
+        self.randomNeed = randomNeed
 

@@ -33,7 +33,12 @@ class server:
         return True
     
     def listenPackage(self):
-        indata = self.conn.recv(1024)
+        try:
+            indata = self.conn.recv(1024)
+        except:
+            print("connection closed")
+            return "close"
+        
         if(len(indata) == 0):
             print("connection closed")
             return "close"
@@ -55,7 +60,7 @@ class server:
 
                 jsondata = json.loads(self.temp)
                 self.temp = ""
-                package = Package(jsondata["ACTION"],jsondata["restaurantRequestName"],jsondata["requestLocation"],jsondata["requestTarget"])
+                package = Package(jsondata["ACTION"],jsondata["restaurantRequestName"],jsondata["requestLocation"],jsondata["requestTarget"], jsondata["restaurantData"], jsondata["restaurantNeed"], jsondata["randomNeed"])
                 return package
         return None
         #self.packageAnalyze(package)

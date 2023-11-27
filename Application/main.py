@@ -43,9 +43,9 @@ HOST = '127.0.0.1'
 PORT = 2933
 isConnected = False
 
-def packageAnalyze(package):
+def packageAnalyze(package : Package):
     if package.ACTION == ACTION.ASKGPT:
-        threading.Thread(target=restaurantListGenerator.task, args=([package.requestLocation, package.requestTarget, 10, 10])).start()
+        threading.Thread(target=restaurantListGenerator.task, args=([package.requestLocation, package.requestTarget, package.restaurantNeed, package.randomNeed])).start()
     elif package.ACTION == ACTION.REQUESTRESTAURANT:
         restaurantListGenerator.restaurantRequest(package.restaurantRequestName)
     """else:
