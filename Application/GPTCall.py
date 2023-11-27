@@ -117,8 +117,9 @@ class GPTCall:
                 messages=sendMessage
             )
         except openai.error.RateLimitError:
-            sleep(5)
             print("RateLimitWaiting")
+            sleep(20)
+            print("Retry")
             r = self.sendGPTRequest(place, mode, needed, searchResult, startPoint, perExtract, restaurant, reviewList)
             return r
 

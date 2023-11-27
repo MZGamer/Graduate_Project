@@ -61,6 +61,7 @@ def scoreAnalyze( scoreString):
 GPTCall = GPTCall(OPENAIAPI, defTest)
 googleAPI = googleAPI(GOOGLECLOUDAPI, SEARCHENGINEID, TOOFARDIST, defTest)
 DB = DB(file_path, defTest)
+print(DB.DB.index)
 model = transformerModel(modelPath, typeVersion, reviewVersion)
 server = server(HOST, PORT)
 restaurantListGenerator = restaurantListGenerator(googleAPI, GPTCall, DB, model, server, defTest)

@@ -19,9 +19,9 @@ def read_csv_file(file_path):
     return data
 
 
-file_pathA = './maybeNegativeOrNatureEnvironment.csv'
-file_pathB= './reviewType_Empty2wTo4wV5.csv'
-output_file_path = './reviewType_Empty2wTo4wV6.csv'
+file_pathA = './maybePortion.csv'
+file_pathB= './reviewDatasetV5.csv'
+output_file_path = './reviewDatasetV6.csv'
 
 
 
