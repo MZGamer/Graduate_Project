@@ -31,12 +31,13 @@ class restaurantListGenerator:
 
 
     def chkRepeat(self, restaurant_list):
-        placeID = []
+        placeIDList = []
         noRepeatList = []
         for r in restaurant_list:
-            if(r.placeID not in placeID):
+            if(r.placeID not in placeIDList):
+                print(f"{r.placeID} | {placeIDList}")
                 noRepeatList.append(r)
-                placeID.append(r.placeID)
+                placeIDList.append(r.placeID)
         return noRepeatList
     
     def GPT_restaurant_list_Analyze(self, GPTResponse):
@@ -140,7 +141,8 @@ class restaurantListGenerator:
             
 
             existRestaurant_list, needChkRestaurantList = self.DB.searchDB(nameChkedRestaurantList)
-            restaurant_list.extend(self.googleAPI.distChk(userPoint,existRestaurant_list))
+            distChkedRestaurantList = self.googleAPI.distChk(userPoint,existRestaurant_list)
+            restaurant_list.extend(distChkedRestaurantList)
 
             chkedRestaurantList = self.googleAPI.chkRestaurantInfo(userPoint,needChkRestaurantList)
             chkedRestaurantList = self.googleAPI.distChk(userPoint,chkedRestaurantList)
@@ -165,6 +167,8 @@ class restaurantListGenerator:
         if(target == "美食"):
             restaurant_list = self.DB.randomSelect(restaurant_list, restaurantNeeded + randomNeeded)
         print("-----------------Result IN DB-----------------")
+        restaurant_list = self.chkRepeat(restaurant_list)
+        DBBuildingList = self.chkRepeat(DBBuildingList)
         for restaurant in restaurant_list:
             restaurant.print()
             print()
@@ -198,10 +202,7 @@ class restaurantListGenerator:
             reviewPicked = reviewPick(pendingList)
             r = self.GPTCall.sendGPTRequest("", 2, 0, [], 0, 0, restaurant, reviewPicked)
             restaurant.command = r.replace("*", "")
-        
-        restaurantSend = copy.deepcopy(DBBuildingList)
-        package = Package(ACTION.RECEIVEDATA, "", "", "", restaurantSend)
-        self.server.sendPackage(package)            
+             
         self.DB.DBAddRestaurant(DBBuildingList)
         print("-----------------Tack Complete-----------------")
 

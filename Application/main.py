@@ -36,7 +36,7 @@ file_path= './restaurantDB.csv'
 #model
 modelPath = "D:/Work/Project/School_Homework/Graduate_Project/predict_Model"
 typeVersion = "1121"
-reviewVersion = "1123"
+reviewVersion = "1127"
 
 #server
 HOST = '127.0.0.1'
@@ -71,7 +71,7 @@ indexList = DB.DB.index[DB.DB["Name"] == "大雅牛排"].tolist()
 if len(indexList) != 0:
     restaurantData = DB.DB.loc[indexList[0]]
     if(defTest):
-        print(f"restaurant: 八谷 豬排 咖哩 民族店 in DB")
+        print(f"restaurant: 大雅牛排 in DB")
     loc = restaurantData["location"].split(",")
     location = {'lat': loc[0], 'lng': loc[1]}
     chkedRestaurant.append(Restaurant(restaurantData["Name"], restaurantData["placeID"], restaurantData["type"], restaurantData["address"], location, restaurantData["command"], restaurantData["rating"], restaurantData["userRatingTotal"], scoreAnalyze(restaurantData["detailRating"]), restaurantData["Review"]))
