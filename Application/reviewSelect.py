@@ -40,7 +40,11 @@ def reviewPreprocess(restaurant : Restaurant):
             scoreCount+=1
         #print(review.split('^')[2])
         timeText = review.split('^')[1]
-        number = int(review.split('^')[1].split()[0])
+        try:
+            number = int(review.split('^')[1].split()[0])
+        except:
+            print(review)
+            continue
         unit = review.split('^')[1].split(' ')[1]
         day = 0
         if("分鐘" in unit):
