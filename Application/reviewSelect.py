@@ -42,25 +42,25 @@ def reviewPreprocess(restaurant : Restaurant):
         timeText = review.split('^')[1]
         try:
             number = int(review.split('^')[1].split()[0])
+            unit = review.split('^')[1].split(' ')[1]
+            day = 0
+            if("分鐘" in unit):
+                day = 0
+            elif("小時" in unit):
+                day = 0
+            elif("天" in unit):
+                day = number
+            elif("週" in unit):
+                day = number*7
+            elif("個月" in unit):
+                day = number*30
+            elif("年" in unit):
+                day = number*365
+
+            reviewListWithScore.append(reviewData(review.split('^')[2],reviewScore,scoreCount, day))
         except:
             print(review)
             continue
-        unit = review.split('^')[1].split(' ')[1]
-        day = 0
-        if("分鐘" in unit):
-            day = 0
-        elif("小時" in unit):
-            day = 0
-        elif("天" in unit):
-            day = number
-        elif("週" in unit):
-            day = number*7
-        elif("個月" in unit):
-            day = number*30
-        elif("年" in unit):
-            day = number*365
-
-        reviewListWithScore.append(reviewData(review.split('^')[2],reviewScore,scoreCount, day))
     return reviewListWithScore
 
 def reviewClassify(reviewListWithScore):
@@ -88,7 +88,7 @@ def reviewClassify(reviewListWithScore):
     return pendingList
 
 def reviewPick(pendingList):
-    MAXNEED = 2
+    MAXNEED = 3
     reviewPick = []
     currentPositive = [0,0,0,0,0]
     currentNature = [0,0,0,0,0]
