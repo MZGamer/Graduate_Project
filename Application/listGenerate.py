@@ -166,6 +166,7 @@ class restaurantListGenerator:
                     """
         if(target == "美食"):
             restaurant_list = self.DB.randomSelect(restaurant_list, restaurantNeeded + randomNeeded)
+            restaurant_list = self.googleAPI.distChk(userPoint,restaurant_list)
         print("-----------------Result IN DB-----------------")
         restaurant_list = self.chkRepeat(restaurant_list)
         DBBuildingList = self.chkRepeat(DBBuildingList)

@@ -76,7 +76,7 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         disconnect = true;
-        NetworkManager.ip = "127.0.0.1";
+        NetworkManager.ip = "25.33.153.168";
         NetworkManager.port = 2933;
         NetworkManager.connectSettingComplete = true;
         //NetworkManager.sendingQueue.Enqueue(test);
@@ -87,27 +87,6 @@ public class UIManager : MonoBehaviour
 
         restaurants = new List<Restaurant>();
         historys = new List<history>();
-        Restaurant testr = new Restaurant();
-
-
-        testr.type = "台式";
-        testr.address = "600嘉義市東區小雅路382號";
-        testr.name = "嘉義噴水雞肉飯-小雅旗艦店";
-        testr.detailRating = new List<float>();
-        testr.detailRating.Add(2.22f);
-        testr.detailRating.Add(2.22f);
-        testr.detailRating.Add(2.22f);
-        testr.detailRating.Add(2.22f);
-        testr.detailRating.Add(2.22f);
-
-        testr.GRating = 3.5f;
-
-        restaurants.Add(testr);
-        restaurants.Add(testr);
-        restaurants.Add(testr);
-        restaurants.Add(testr);
-        restaurants.Add(testr);
-        restaurants.Add(testr);
 
         UIUpdate();
 
@@ -157,10 +136,12 @@ public class UIManager : MonoBehaviour
                     requestRestaurantButton.interactable = true;
                     searchingIcon.SetActive(false);
                     seeHistory = false;
+                    changeScoreSort();
                     UIUpdate();
                     if (tempHistory != null) {
                         tempHistory.restaurants = restaurants;
                         historys.Add(tempHistory);
+                        tempHistory = null;
                     }
 
                 }
@@ -236,7 +217,7 @@ public class UIManager : MonoBehaviour
         }
 
         if(restaurantNeedInput.text == "") {
-            restaurantNeed = 0;
+            restaurantNeed = 10;
         } else {
             try {
                 restaurantNeed = Convert.ToInt32(restaurantNeedInput.text);
@@ -247,7 +228,7 @@ public class UIManager : MonoBehaviour
         }
 
         if (randomNeedInput.text == "") {
-            randomNeed = 0;
+            randomNeed = 10;
         } else {
             try {
                 randomNeed = Convert.ToInt32(randomNeedInput.text);
@@ -308,8 +289,8 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void changeSoreSort() {
-        if (scoreDisplay.value == 0) {
+    public void changeScoreSort() {
+        if (scoreSortBy.value == 0) {
             restaurants = restaurants.OrderByDescending(r => r.GRating).ToList();
         } else {
             restaurants = restaurants.OrderByDescending(r => r.detailRating[scoreSortBy.value-1]).ToList();

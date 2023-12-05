@@ -8395,7 +8395,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 375547869}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: changeSoreSort
+        m_MethodName: changeScoreSort
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

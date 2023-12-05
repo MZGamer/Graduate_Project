@@ -33,11 +33,19 @@ public class restaurantInfo : MonoBehaviour
         name.text = restaurant.name;
         address.text = restaurant.address;
         gMapScoreText.text = restaurant.GRating.ToString();
-        portionScore.text = string.Format("份量 : {0} / 5.00", restaurant.detailRating[0]);
-        serviceScore.text = string.Format("服務 : {0} / 5.00", restaurant.detailRating[1]);
-        environmentScore.text = string.Format("環境 : {0} / 5.00", restaurant.detailRating[2]);
-        priceScore.text = string.Format("價格 : {0} / 5.00", restaurant.detailRating[3]);
-        foodQualityScore.text = string.Format("餐點 : {0} / 5.00", restaurant.detailRating[4]);
+        List<string> scoreList = new List<string> {"0", "0", "0", "0", "0"};
+        for(int i = 0; i < 5; i++) {
+            if(restaurant.detailRating[i] == 0) {
+                scoreList[i] = "NA";
+            }else {
+                scoreList[i] = restaurant.detailRating[i].ToString();
+            }
+        }
+        portionScore.text = string.Format("份量 : {0} / 5.00", scoreList[0]);
+        serviceScore.text = string.Format("服務 : {0} / 5.00", scoreList[1]);
+        environmentScore.text = string.Format("環境 : {0} / 5.00", scoreList[2]);
+        priceScore.text = string.Format("價格 : {0} / 5.00", scoreList[3]);
+        foodQualityScore.text = string.Format("餐點 : {0} / 5.00", scoreList[4]);
     }
     // Update is called once per frame
     void Update()
